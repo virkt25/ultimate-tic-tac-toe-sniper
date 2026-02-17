@@ -1,0 +1,72 @@
+project:
+  name: ultimate-tic-tac-toe-sniper
+  type: saas
+  description: A Web Version of Ultimate Tic Tac Toe
+stack:
+  language: typescript
+  frontend: react
+  backend: node-fastify
+  database: null
+  cache: null
+  infrastructure: null
+  test_runner: null
+  package_manager: pnpm
+review_gates:
+  after_discover: flexible
+  after_plan: strict
+  after_solve: flexible
+  after_sprint: strict
+agent_teams:
+  max_teammates: 5
+  default_model: sonnet
+  planning_model: opus
+  delegate_mode: true
+  plan_approval: true
+  coordination_timeout: 30
+domain_packs: []
+ownership:
+  backend:
+    - src/backend/
+    - src/api/
+    - src/services/
+    - src/db/
+    - src/workers/
+  frontend:
+    - src/frontend/
+    - src/components/
+    - src/hooks/
+    - src/styles/
+    - src/pages/
+  infrastructure:
+    - docker/
+    - .github/
+    - infra/
+    - terraform/
+    - scripts/
+  tests:
+    - tests/
+    - __tests__/
+    - "*.test.*"
+    - "*.spec.*"
+  ai:
+    - src/ai/
+    - src/ml/
+    - src/pipeline/
+  docs:
+    - docs/
+state:
+  current_phase: discover
+  phase_history:
+    - phase: discover
+      started_at: "2026-02-17T00:00:00Z"
+      completed_at: null
+      approved_by: null
+  current_sprint: 0
+  artifacts:
+    brief: null
+    prd: null
+    architecture: null
+    ux_spec: null
+    security: null
+    epics: null
+    stories: null
