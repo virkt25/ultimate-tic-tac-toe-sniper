@@ -5,7 +5,7 @@ project:
 stack:
   language: typescript
   frontend: react
-  backend: node-fastify
+  backend: null
   database: null
   cache: null
   infrastructure: null

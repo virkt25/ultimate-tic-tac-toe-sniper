@@ -19,9 +19,8 @@ This project is a simple browser-based game with local multiplayer and no persis
 
 ### Integration Risks
 This project has minimal third-party dependencies and no external integrations (no auth providers, no payment gateways, no analytics SDKs). The only integration risks are:
-- **React and Fastify version compatibility:** Low risk. Both are mature, well-documented frameworks with stable APIs.
 - **pnpm workspace management:** Low risk if monorepo not used; no risk for single package.
-- **Browser API inconsistencies:** Touch events, local storage, and viewport units can behave differently across browsers. Test on Safari (iOS), Chrome (Android), and Firefox.
+- **Browser API inconsistencies:** Touch events and viewport units can behave differently across browsers. Test on Safari (iOS) and Chrome (Android) — the two target browsers.
 
 ### Scalability Risks
 This is a LOCAL MULTIPLAYER GAME with no backend. There are NO scalability risks in the traditional sense (no servers, no database, no concurrent users on the same instance). However:
@@ -54,7 +53,7 @@ If the persona document's future features (account creation, ranked mode, game h
 | No monitoring or error tracking means silent failures in production | Add lightweight error tracking (Sentry free tier) to catch JS exceptions. |
 | Build failures due to pnpm lockfile conflicts | Lock pnpm version in CI. Use `pnpm install --frozen-lockfile` in CI/CD. |
 
-**Key assumption:** Fastify backend is mentioned in the stack, but if there's no persistence or online multiplayer, WHAT IS THE BACKEND FOR? If it's just serving the static frontend, this is over-engineering. A static site host (Vercel, Netlify) is simpler and cheaper. If the backend has a purpose (API for future features, game validation), document it. Otherwise, cut it.
+**RESOLVED:** Fastify backend has been cut. The app will be deployed as a static React site to a static host (Vercel, Netlify, or Cloudflare Pages).
 
 ### Team & Resource Risks
 | Risk | Mitigation |
@@ -88,22 +87,22 @@ This project uses standard open-source frameworks (React, Fastify). The supply c
 | 2 | Mobile tap targets too small, causing mis-taps and frustration | 4 | 4 | 16 | P0 | Zoom active sub-board on mobile. Minimum 44x44px tap targets. Test on real devices. |
 | 3 | Game state lost on page refresh (no persistence) | 5 | 2 | 10 | P1 | Accept for V1 local play. Add localStorage save for future. |
 | 4 | Win detection logic has edge case bugs (tied boards, invalid states) | 3 | 4 | 12 | P1 | Write comprehensive unit tests for all win conditions before UI work. |
-| 5 | Fastify backend serves no purpose and over-complicates deployment | 3 | 2 | 6 | P2 | Clarify backend role. If not needed, deploy as static site (Vercel). |
+| 5 | ~~Fastify backend serves no purpose~~ **RESOLVED** — backend cut | - | - | - | - | Deploying as static site. |
 | 6 | Dependency vulnerabilities in React/Fastify | 2 | 3 | 6 | P2 | Run `pnpm audit` in CI. Enable Dependabot for automated updates. |
 | 7 | No error tracking means production bugs go unnoticed | 3 | 2 | 6 | P2 | Add Sentry or similar (free tier). Log errors to console in dev mode. |
 | 8 | Browser compatibility issues (Safari, Firefox, mobile browsers) | 2 | 3 | 6 | P2 | Test on Safari, Firefox, Chrome, iOS Safari, Android Chrome. Use autoprefixer. |
 
-## Assumptions Requiring Validation
-1. **"No backend persistence" means games are lost on refresh.** Validate: Is this acceptable for the target user (local multiplayer)? Should localStorage be used to save in-progress games? The persona doc mentions "Game state reliability" as a shared need across all personas. This conflicts with the "no database" constraint. Clarify intent.
-2. **Fastify backend is included in the stack but with no persistence layer.** Validate: What is the backend for? If it's just serving static files, a static host is simpler. If it's for future API endpoints (matchmaking, game history), document that as future scope and do NOT build it for V1.
-3. **Users will play on the same device (local multiplayer).** Validate: Does this mean pass-and-play (turn-based on one screen) or split-screen? If pass-and-play, ensure the UI hides whose turn it is until the device is handed over (or accept that both players see everything). If online multiplayer is planned, this is a MAJOR scope change.
-4. **The target audience understands or will quickly learn Ultimate Tic Tac Toe rules.** Validate: The persona doc identifies "rule comprehension" as the #1 friction point. Without interactive guidance, casual players (Casey) will bounce. DO NOT assume users know the rules. Test with non-gamers.
-5. **Mobile optimization is critical.** The persona doc prioritizes Morgan (mobile player) as P0, but the stack is React (not React Native). Validate: Is responsive web design sufficient, or is a native app required for the mobile experience?
+## Assumptions — Validated
+1. **No persistence** — VALIDATED: Games are lost on refresh. Accepted by design for local multiplayer.
+2. **No backend** — VALIDATED: Fastify cut. Static site deployment.
+3. **Hotseat multiplayer** — VALIDATED: Both players sit together, take turns clicking. No handoff screen needed.
+4. **No tutorial** — ACCEPTED RISK: No built-in rules explanation. Players learn by playing or look up rules externally. Rule comprehension remains a UX risk — active board highlighting helps mitigate.
+5. **Responsive web is sufficient** — VALIDATED: Mobile-first (320px+), no native app needed. Chrome + Safari only.
 
-## Open Questions
-1. **What is the Fastify backend for?** If there's no database, no user accounts, and no online play, why is there a backend? Is it just serving the React app? If so, replace with static hosting (Vercel, Netlify).
-2. **How is turn-taking handled in local multiplayer?** Pass-and-play (hand the device back and forth)? Or a "hotseat" mode where both players sit together and take turns clicking? This affects UI design (e.g., do we show a "Your turn, Player X" modal?).
-3. **Is game state persisted across sessions?** The constraint says "no database," but the persona doc says "game state reliability" is a shared need. Should we use localStorage to save in-progress games? Or accept that closing the tab loses the game?
-4. **Are there plans for online multiplayer or ranked mode?** The persona doc describes competitive features (Elo, matchmaking, game history) that require a backend and persistence. If these are future scope, document them as out-of-scope for V1 to avoid scope creep.
-5. **How will the game be discovered?** SEO, social sharing, word-of-mouth? If social sharing is key (per Alex persona), we need Open Graph tags, shareable game links, and potentially a "Challenge a Friend" flow. Is this in scope for V1?
-6. **What devices and browsers are in scope for testing?** At minimum: Chrome desktop, Safari desktop, iOS Safari, Android Chrome. What about Firefox, Edge, older Android browsers (Samsung Internet)?
+## Resolved Questions
+1. **Backend** — RESOLVED: Fastify cut. Static React app deployed to static host.
+2. **Turn-taking** — RESOLVED: Hotseat mode. Both players sit side by side, turn indicator shows whose move it is. No handoff screen.
+3. **Persistence** — RESOLVED: No persistence. Closing the tab loses the game. Accepted by design.
+4. **Online multiplayer** — RESOLVED: Maybe in future. Keep game logic separable from UI but don't overbuild for V1.
+5. **Discovery** — RESOLVED: Decide later. No SEO or sharing features in V1 scope.
+6. **Browser support** — RESOLVED: Chrome + Safari (desktop + mobile). No Firefox, Edge, or Samsung Internet for V1.

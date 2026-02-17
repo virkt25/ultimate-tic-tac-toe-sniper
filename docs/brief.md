@@ -39,14 +39,14 @@ Ultimate Tic-Tac-Toe Sniper differentiates through radical simplicity: zero barr
 
 ## Key Assumptions
 1. Users value frictionless access over feature richness — the hypothesis is that eliminating accounts/ads/downloads outweighs missing online multiplayer or AI opponents for the local play use case.
-2. TypeScript/React/Fastify stack without a database is sufficient for stateless local gameplay — no evidence yet that users need game persistence or history for casual local sessions.
+2. TypeScript/React stack (no backend) is sufficient for stateless local gameplay — confirmed: no persistence needed, closing tab loses game.
 3. There is sufficient demand for local-only multiplayer to justify building a standalone implementation rather than directing users to existing platforms with local modes.
 4. SEO and organic discovery can drive traffic without marketing spend — assumes "ultimate tic tac toe" and related keywords have searchable volume.
 
 ## Technical Constraints
 - **No database requirement:** All game state must be client-side, limiting features like match history, leaderboards, or saved games.
-- **Browser compatibility:** Must support modern browsers (Chrome, Firefox, Safari, Edge) with HTML5 and JavaScript enabled. Target devices include desktops, tablets, and mobile phones.
-- **Stateless architecture:** Backend (Node-Fastify) serves static assets only; game logic runs entirely client-side in React.
+- **Browser compatibility:** Must support Chrome and Safari (desktop + mobile) with HTML5 and JavaScript enabled. Target devices include desktops, tablets, and mobile phones (320px+ minimum).
+- **Stateless architecture:** No backend. Game logic runs entirely client-side in React. Deployed as a static site.
 - **No authentication system:** Design explicitly excludes user accounts, sessions, or identity management.
 - **Responsive design requirement:** Must accommodate various screen sizes for local multiplayer on different devices.
 - **No external dependencies:** Cannot rely on third-party game services, analytics requiring user consent, or cloud infrastructure.
@@ -61,8 +61,8 @@ Ultimate Tic-Tac-Toe Sniper differentiates through radical simplicity: zero barr
 - Win detection for individual boards and overall game
 - Game reset/restart functionality
 - Responsive design for desktop, tablet, and mobile
-- Lightweight Fastify backend serving static React build
-- Basic rule explanation or help screen
+- Static site deployment (no backend)
+- Active board highlighting (inactive boards normal but unclickable)
 
 ### Out of Scope (v1)
 - Online multiplayer or matchmaking
@@ -77,9 +77,15 @@ Ultimate Tic-Tac-Toe Sniper differentiates through radical simplicity: zero barr
 - Social sharing or viral features
 - Analytics tracking (respect privacy-first approach)
 
-## Open Questions
-1. Should the game include a timer or move history display within a single session (non-persistent), or keep the UI maximally minimal?
-2. What is the optimal UX for indicating which sub-board is active? Should inactive boards be greyed out, locked, or visually distinct?
-3. Is there value in a "practice mode" that explains rules interactively, or should documentation be static text?
-4. Should the design support more than two players sharing a device (e.g., tournament bracket mode for 4+ players taking turns), or strictly focus on 1v1?
-5. What is the target minimum screen size for mobile support — should very small phones be supported, or focus on tablet-size and up for better UX?
+## Resolved Questions
+1. **Timer / move history?** No — keep UI maximally minimal.
+2. **Active board UX?** Highlight active board only; inactive boards stay visually normal but are unclickable.
+3. **Tutorial / practice mode?** No — no built-in rules explanation.
+4. **Multi-player beyond 1v1?** No — strictly 1v1.
+5. **Minimum screen size?** Mobile-first, 320px+ supported.
+6. **Turn-taking model?** Hotseat — both players side by side, turn indicator only.
+7. **Backend?** Cut Fastify — static React app deployed to static host.
+8. **Persistence?** None — closing tab loses game, by design.
+9. **Future online play?** Maybe — keep game logic separable but don't overbuild.
+10. **Discovery / SEO?** Decide later, not in V1 scope.
+11. **Browser support?** Chrome + Safari (desktop + mobile).
