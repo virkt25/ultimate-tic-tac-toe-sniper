@@ -1,3 +1,5 @@
+> **Status:** Complete (Sprint 1)
+
 # Story S02: Configure ESLint and Prettier
 
 > **Epic:** E01-foundation (`docs/epics/E01-foundation.md`)

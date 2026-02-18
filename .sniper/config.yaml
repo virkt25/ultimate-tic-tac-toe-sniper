@@ -55,7 +55,7 @@ ownership:
   docs:
     - docs/
 state:
-  current_phase: solve
+  current_phase: sprint
   phase_history:
     - phase: discover
       started_at: "2026-02-17T18:00:00Z"
@@ -69,7 +69,11 @@ state:
       started_at: "2026-02-17T22:00:00Z"
       completed_at: "2026-02-17T22:45:00Z"
       approved_by: "auto-flexible"
-  current_sprint: 0
+    - phase: "sprint-1"
+      started_at: "2026-02-18T00:00:00Z"
+      completed_at: "2026-02-18T01:44:00Z"
+      approved_by: "human"
+  current_sprint: 1
   artifacts:
     brief: draft
     prd: draft

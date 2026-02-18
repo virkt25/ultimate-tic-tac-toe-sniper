@@ -1,3 +1,5 @@
+> **Status:** Complete (Sprint 1)
+
 # Story S04: Define game types and constants
 
 > **Epic:** E02-game-logic (`docs/epics/E02-game-logic.md`)
