@@ -1,3 +1,5 @@
+> **Status:** Complete (Sprint 1)
+
 # Story S01: Scaffold Vite + React + TypeScript project
 
 > **Epic:** E01-foundation (`docs/epics/E01-foundation.md`)
