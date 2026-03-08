@@ -1,0 +1,12 @@
+protocol: full
+protocol_id: SNPR-20260307-c1a9
+phase: plan
+timestamp: 2026-03-07T00:00:00Z
+status: completed
+agents:
+  - name: architect
+    status: completed
+token_usage:
+  phase: 18198
+  cumulative: 38352
+commits: []

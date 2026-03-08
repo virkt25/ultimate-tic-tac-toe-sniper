@@ -1,0 +1,85 @@
+project:
+  name: ultimate-tic-tac-toe-sniper
+  type: saas
+  description: Simple web version of ultimate tic tac toe with the a modern, clean, delightful user interface
+agents:
+  max_teammates: 5
+  plan_approval: true
+  coordination_timeout: 30
+  base:
+    - lead-orchestrator
+    - analyst
+    - architect
+    - product-manager
+    - backend-dev
+    - frontend-dev
+    - qa-engineer
+    - code-reviewer
+    - gate-reviewer
+    - retro-analyst
+  mixins: {}
+routing:
+  auto_detect:
+    patch_max_files: 5
+    feature_max_files: 20
+  default: feature
+  budgets:
+    full: 2000000
+    feature: 800000
+    patch: 200000
+    ingest: 1000000
+    explore: 500000
+    refactor: 600000
+    hotfix: 100000
+cost:
+  warn_threshold: 0.7
+  soft_cap: 0.9
+  hard_cap: 1
+review:
+  multi_model: false
+  models: []
+  require_consensus: true
+ownership:
+  backend:
+    - src/backend/
+    - src/api/
+    - src/services/
+    - src/db/
+  frontend:
+    - src/frontend/
+    - src/components/
+    - src/hooks/
+    - src/styles/
+    - src/pages/
+  infrastructure:
+    - docker/
+    - .github/
+    - infra/
+    - scripts/
+  tests:
+    - tests/
+    - __tests__/
+    - "*.test.*"
+    - "*.spec.*"
+  docs:
+    - docs/
+stack:
+  language: typescript
+  frontend: null
+  backend: null
+  database: null
+  infrastructure: null
+  test_runner: null
+  package_manager: npm
+  commands:
+    test: ""
+    lint: ""
+    typecheck: ""
+    build: ""
+plugins: []
+triggers: []
+visibility:
+  live_status: true
+  checkpoints: true
+  cost_tracking: true
+  auto_retro: true

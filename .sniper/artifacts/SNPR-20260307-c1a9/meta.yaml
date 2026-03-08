@@ -1,0 +1,11 @@
+id: SNPR-20260307-c1a9
+protocol: full
+description: Build a simple web version of ultimate tic tac toe with modern, delightful UX. Two players on same browser, no backend.
+status: in_progress
+started: 2026-03-07T00:00:00Z
+phases:
+  - discover
+  - plan
+  - solve
+  - implement
+  - review

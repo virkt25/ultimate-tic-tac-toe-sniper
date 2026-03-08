@@ -1,0 +1,48 @@
+gate: plan
+protocol_id: SNPR-20260307-c1a9
+timestamp: "2026-03-07"
+result: PASS
+
+checks:
+  - id: has_context_section
+    description: Architecture plan includes Context section
+    blocking: true
+    result: PASS
+    detail: "Found '## Context' in plan.md (1 occurrence)"
+
+  - id: has_decisions_section
+    description: Architecture plan includes Decisions section
+    blocking: true
+    result: PASS
+    detail: "Found '## Decisions' in plan.md (1 occurrence)"
+
+  - id: has_components_section
+    description: Architecture plan includes Components section
+    blocking: true
+    result: PASS
+    detail: "Found '## Components' in plan.md (1 occurrence)"
+
+  - id: has_data_model_section
+    description: Architecture plan includes Data Model section
+    blocking: true
+    result: PASS
+    detail: "Found '## Data Model' in plan.md (1 occurrence)"
+
+  - id: open_questions
+    description: No unresolved open questions remain
+    blocking: false
+    result: PASS
+    detail: "No **TBD**, **TODO**, or **OPEN** markers found in artifacts"
+
+  - id: token_budget
+    description: "Architecture plan within character budget (~4000 tokens = 16000 chars)"
+    blocking: false
+    result: PASS
+    detail: "plan.md is 7159 characters (limit: 16000)"
+
+blocking_pass: true
+advisory_pass: true
+summary: >
+  All 6 checks passed (4 blocking, 2 advisory). The architecture plan is
+  well-structured with all required sections, no unresolved markers, and
+  well within the character budget at 7159/16000 chars.
