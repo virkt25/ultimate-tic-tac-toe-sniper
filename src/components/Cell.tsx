@@ -13,6 +13,23 @@ interface CellProps {
   onClick: () => void;
 }
 
+function XSymbol({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 100 100" aria-hidden="true">
+      <line x1="22" y1="22" x2="78" y2="78" stroke="currentColor" strokeWidth="14" strokeLinecap="round" />
+      <line x1="78" y1="22" x2="22" y2="78" stroke="currentColor" strokeWidth="14" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function OSymbol({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="30" stroke="currentColor" strokeWidth="14" fill="none" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export function Cell({
   value,
   isValid,
@@ -45,10 +62,18 @@ export function Cell({
       aria-label={`${posLabel}, ${valueLabel}${statusLabel}`}
       type="button"
     >
-      {value ? (
-        value
+      {value === 'X' ? (
+        <XSymbol className={styles.symbol} />
+      ) : value === 'O' ? (
+        <OSymbol className={styles.symbol} />
       ) : isValid ? (
-        <span className={styles.hoverHint}>{currentPlayer}</span>
+        <span className={styles.hoverHint}>
+          {currentPlayer === 'X' ? (
+            <XSymbol className={styles.symbol} />
+          ) : (
+            <OSymbol className={styles.symbol} />
+          )}
+        </span>
       ) : null}
     </button>
   );

@@ -127,6 +127,7 @@ export function MetaBoard({ state, onCellClick }: MetaBoardProps) {
           cells={cells}
           status={state.subBoardStatus[idx]}
           isActive={isSubBoardActive(idx as SubBoardIndex)}
+          isFreeMove={state.activeSubBoard === null && state.gameOutcome === null}
           currentPlayer={state.currentPlayer}
           lastMove={state.lastMove}
           isValidMove={checkValidMove}
