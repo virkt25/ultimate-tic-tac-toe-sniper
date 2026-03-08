@@ -27,7 +27,7 @@ export function App() {
       <h1 className={styles.title}>Ultimate Tic-Tac-Toe</h1>
       <GameStatus state={gameState} />
       <MetaBoard state={gameState} onCellClick={handleCellClick} />
-      <Controls onNewGame={state.reset} />
+      <Controls onNewGame={state.reset} isGameOver={gameState.gameOutcome !== null} />
     </div>
   );
 }

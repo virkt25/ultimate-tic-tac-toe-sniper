@@ -25,6 +25,7 @@
   background: rgba(129, 140, 248, 0.2);
   border-color: rgba(129, 140, 248, 0.5);
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(129, 140, 248, 0.2);
 }
 
 .newGameBtn:active {
@@ -33,4 +34,21 @@
 
 .newGameBtn:focus-visible {
   box-shadow: 0 0 0 2px #818cf8;
+}
+
+.emphasized {
+  padding: 12px 32px;
+  font-size: 1rem;
+  background: rgba(129, 140, 248, 0.25);
+  border-color: rgba(129, 140, 248, 0.6);
+  animation: emphasisPulse 2s ease-in-out infinite;
+}
+
+@keyframes emphasisPulse {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(129, 140, 248, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(129, 140, 248, 0.5);
+  }
 }

@@ -2,8 +2,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 8px;
-  padding: 12px;
+  gap: clamp(4px, 1vw, 8px);
+  padding: clamp(6px, 1.5vw, 14px);
   border-radius: 16px;
   background: rgba(30, 41, 59, 0.6);
   border: 2px solid rgba(71, 85, 105, 0.3);
@@ -11,7 +11,7 @@
     0 4px 6px -1px rgba(0, 0, 0, 0.3),
     0 2px 4px -2px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  width: min(85vw, 520px);
+  width: clamp(280px, 85vw, 540px);
   aspect-ratio: 1;
   position: relative;
 }
@@ -35,10 +35,23 @@
   }
 }
 
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .metaBoard {
+    width: clamp(400px, 70vw, 520px);
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .metaBoard {
+    width: 540px;
+  }
+}
+
+/* Mobile */
 @media (max-width: 767px) {
   .metaBoard {
-    gap: 6px;
-    padding: 8px;
     border-radius: 12px;
     width: min(92vw, 520px);
   }
@@ -46,8 +59,6 @@
 
 @media (max-width: 499px) {
   .metaBoard {
-    gap: 4px;
-    padding: 6px;
     border-radius: 10px;
     width: min(96vw, 520px);
   }

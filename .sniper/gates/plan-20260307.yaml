@@ -1,38 +1,48 @@
 gate: plan
-timestamp: 2026-03-07T00:03:00Z
-result: pass
+protocol_id: SNPR-20260307-c1a9
+timestamp: "2026-03-07"
+result: PASS
+
 checks:
   - id: has_context_section
-    status: pass
+    description: Architecture plan includes Context section
     blocking: true
-    output: "## Context section found in plan.md"
+    result: PASS
+    detail: "Found '## Context' in plan.md (1 occurrence)"
+
   - id: has_decisions_section
-    status: pass
+    description: Architecture plan includes Decisions section
     blocking: true
-    output: "## Decisions section found in plan.md"
+    result: PASS
+    detail: "Found '## Decisions' in plan.md (1 occurrence)"
+
   - id: has_components_section
-    status: pass
+    description: Architecture plan includes Components section
     blocking: true
-    output: "## Components section found in plan.md"
+    result: PASS
+    detail: "Found '## Components' in plan.md (1 occurrence)"
+
   - id: has_data_model_section
-    status: pass
+    description: Architecture plan includes Data Model section
     blocking: true
-    output: "## Data Model section found in plan.md"
-  - id: ears_criteria
-    status: pass
-    blocking: true
-    output: "All 10 stories contain EARS 'shall' criteria"
+    result: PASS
+    detail: "Found '## Data Model' in plan.md (1 occurrence)"
+
   - id: open_questions
-    status: pass
+    description: No unresolved open questions remain
     blocking: false
-    output: "No unresolved TBD/TODO/OPEN markers"
+    result: PASS
+    detail: "No **TBD**, **TODO**, or **OPEN** markers found in artifacts"
+
   - id: token_budget
-    status: pass
+    description: "Architecture plan within character budget (~4000 tokens = 16000 chars)"
     blocking: false
-    output: "plan.md within character budget"
-  - id: interactive_review
-    status: pass
-    blocking: true
-    output: "User approved plan at interactive review"
-blocking_failures: 0
-total_checks: 8
+    result: PASS
+    detail: "plan.md is 7159 characters (limit: 16000)"
+
+blocking_pass: true
+advisory_pass: true
+summary: >
+  All 6 checks passed (4 blocking, 2 advisory). The architecture plan is
+  well-structured with all required sections, no unresolved markers, and
+  well within the character budget at 7159/16000 chars.

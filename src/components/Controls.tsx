@@ -2,12 +2,20 @@ import styles from './Controls.module.css';
 
 interface ControlsProps {
   onNewGame: () => void;
+  isGameOver?: boolean;
 }
 
-export function Controls({ onNewGame }: ControlsProps) {
+export function Controls({ onNewGame, isGameOver = false }: ControlsProps) {
+  const btnClasses = [
+    styles.newGameBtn,
+    isGameOver ? styles.emphasized : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <div className={styles.controls}>
-      <button className={styles.newGameBtn} onClick={onNewGame} type="button">
+      <button className={btnClasses} onClick={onNewGame} type="button">
         New Game
       </button>
     </div>

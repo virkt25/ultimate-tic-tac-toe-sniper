@@ -1,22 +1,27 @@
 gate: discover
-timestamp: 2026-03-07T00:01:00Z
+protocol_id: SNPR-20260307-c1a9
+timestamp: 2026-03-07T00:00:00Z
 result: pass
 checks:
   - id: spec_produced
     status: pass
     blocking: true
-    output: ".sniper/artifacts/spec.md exists (278 lines)"
+    output: "File exists: .sniper/artifacts/spec.md"
+
   - id: scope_defined
     status: pass
     blocking: true
-    output: "## Requirements section found"
+    output: "Found '## 1. Requirements' at line 9 (numbered heading variant of '## Requirements'). Sections 1.1-1.4 define gameplay, edge cases, UX, and technical requirements."
+
   - id: out_of_scope_explicit
     status: pass
     blocking: false
-    output: "## Out of Scope section found"
+    output: "Found '## 2. Out of Scope' at line 58 (numbered heading variant of '## Out of Scope'). Nine explicit exclusions listed."
+
   - id: codebase_overview
-    status: pass
+    status: fail
     blocking: false
-    output: ".sniper/artifacts/codebase-overview.md exists (154 lines)"
+    output: "File not found: .sniper/artifacts/codebase-overview.md. Expected for new project — non-blocking."
+
 blocking_failures: 0
 total_checks: 4

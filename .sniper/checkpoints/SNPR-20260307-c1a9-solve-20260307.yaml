@@ -1,0 +1,12 @@
+protocol: full
+protocol_id: SNPR-20260307-c1a9
+phase: solve
+timestamp: 2026-03-07T00:00:00Z
+status: completed
+agents:
+  - name: product-manager
+    status: completed
+token_usage:
+  phase: 22154
+  cumulative: 60506
+commits: []

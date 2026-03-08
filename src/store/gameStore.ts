@@ -51,7 +51,7 @@ export const useGameStore = create<GameStore>()(
       },
     }),
     {
-      name: 'ultimate-ttt-game',
+      name: 'uttt-game',
     },
   ),
 );

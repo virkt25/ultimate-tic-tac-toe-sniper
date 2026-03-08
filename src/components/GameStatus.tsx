@@ -19,7 +19,7 @@ export function GameStatus({ state }: GameStatusProps) {
         <span className={`${styles.playerBadge} ${winner === 'X' ? styles.badgeX : styles.badgeO}`}>
           {winner}
         </span>
-        <span className={styles.message}>wins the game!</span>
+        <span className={styles.message}>Wins!</span>
       </div>
     );
   }
@@ -31,7 +31,7 @@ export function GameStatus({ state }: GameStatusProps) {
         role="status"
         aria-live="polite"
       >
-        <span className={styles.message}>Game ended in a draw</span>
+        <span className={styles.message}>It's a Draw!</span>
       </div>
     );
   }
@@ -47,7 +47,7 @@ export function GameStatus({ state }: GameStatusProps) {
       >
         {currentPlayer}
       </span>
-      <span className={styles.message}>to play</span>
+      <span className={styles.message}>{currentPlayer === 'X' ? "X's Turn" : "O's Turn"}</span>
     </div>
   );
 }

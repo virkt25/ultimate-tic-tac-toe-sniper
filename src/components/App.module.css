@@ -3,14 +3,14 @@
   flex-direction: column;
   align-items: center;
   gap: 24px;
-  padding: 24px 16px;
+  padding: 32px 16px;
   min-height: 100vh;
   width: 100%;
-  max-width: 600px;
+  max-width: 640px;
 }
 
 .title {
-  font-size: clamp(1.25rem, 4vw, 1.75rem);
+  font-size: clamp(1.25rem, 4vw, 2rem);
   font-weight: 800;
   letter-spacing: -0.02em;
   background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
@@ -20,7 +20,14 @@
   text-align: center;
 }
 
-/* Responsive scaling */
+/* Tablet (768px - 1023px) */
+@media (max-width: 1023px) {
+  .app {
+    padding: 24px 16px;
+  }
+}
+
+/* Mobile (< 768px) */
 @media (max-width: 767px) {
   .app {
     gap: 16px;
@@ -28,6 +35,7 @@
   }
 }
 
+/* Small mobile (< 500px) */
 @media (max-width: 499px) {
   .app {
     gap: 12px;
