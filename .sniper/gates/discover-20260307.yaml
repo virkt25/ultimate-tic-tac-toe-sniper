@@ -1,22 +1,11 @@
-gate: discover
-timestamp: 2026-03-07T00:01:00Z
+protocol_id: SNPR-20260307-c8a1
+phase: discover
+timestamp: "2026-03-07T00:00:00Z"
 result: pass
-checks:
-  - id: spec_produced
-    status: pass
-    blocking: true
-    output: ".sniper/artifacts/spec.md exists (278 lines)"
-  - id: scope_defined
-    status: pass
-    blocking: true
-    output: "## Requirements section found"
-  - id: out_of_scope_explicit
-    status: pass
-    blocking: false
-    output: "## Out of Scope section found"
-  - id: codebase_overview
-    status: pass
-    blocking: false
-    output: ".sniper/artifacts/codebase-overview.md exists (154 lines)"
-blocking_failures: 0
-total_checks: 4
+human_approval: true
+checklist:
+  spec_exists: true
+  prd_exists: true
+  risks_identified: true
+  scope_defined: true
+  user_approved: true

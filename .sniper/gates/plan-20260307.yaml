@@ -1,38 +1,13 @@
-gate: plan
-timestamp: 2026-03-07T00:03:00Z
+protocol_id: SNPR-20260307-c8a1
+phase: plan
+timestamp: "2026-03-07T00:00:00Z"
 result: pass
-checks:
-  - id: has_context_section
-    status: pass
-    blocking: true
-    output: "## Context section found in plan.md"
-  - id: has_decisions_section
-    status: pass
-    blocking: true
-    output: "## Decisions section found in plan.md"
-  - id: has_components_section
-    status: pass
-    blocking: true
-    output: "## Components section found in plan.md"
-  - id: has_data_model_section
-    status: pass
-    blocking: true
-    output: "## Data Model section found in plan.md"
-  - id: ears_criteria
-    status: pass
-    blocking: true
-    output: "All 10 stories contain EARS 'shall' criteria"
-  - id: open_questions
-    status: pass
-    blocking: false
-    output: "No unresolved TBD/TODO/OPEN markers"
-  - id: token_budget
-    status: pass
-    blocking: false
-    output: "plan.md within character budget"
-  - id: interactive_review
-    status: pass
-    blocking: true
-    output: "User approved plan at interactive review"
-blocking_failures: 0
-total_checks: 8
+human_approval: true
+checklist:
+  architecture_plan_exists: true
+  adrs_documented: true
+  stories_created: true
+  stories_reference_architecture: true
+  dependency_graph_valid: true
+  user_approved_architecture: true
+  user_approved_stories: true

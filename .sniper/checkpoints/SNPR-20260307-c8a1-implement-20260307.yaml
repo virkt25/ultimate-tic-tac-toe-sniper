@@ -1,0 +1,24 @@
+protocol: full
+protocol_id: SNPR-20260307-c8a1
+phase: implement
+timestamp: "2026-03-07T00:00:00Z"
+status: completed
+agents:
+  - name: frontend-dev
+    status: completed
+    stories: [S01, S02, S03, S04, S05, S06, S07, S08, S09, S10]
+token_usage:
+  phase: 80792
+  cumulative: 169775
+commits:
+  - 0f894e2  # S01-S02: scaffold + types
+  - c02ee8e  # S03-S05: engine + tests
+  - 821e0c5  # S06-S07: UI + store
+  - 52b14cc  # S08-S10: polish + controls + a11y
+  - b279bcd  # merge into main branch
+tests:
+  passing: 78
+  failing: 0
+build:
+  status: clean
+  size_gzip: "63.56 KB JS + 2.18 KB CSS"

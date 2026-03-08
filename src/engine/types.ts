@@ -9,13 +9,20 @@ export type SubBoardStatus =
   | { result: 'draw' };
 
 export interface GameState {
-  /** board[subBoardIndex][cellIndex] */
+  /** board[subBoardIndex][cellIndex] — 9 arrays of 9 cells */
   board: CellValue[][];
+  /** Status of each of the 9 sub-boards */
   subBoardStatus: SubBoardStatus[];
+  /** Whose turn it is */
   currentPlayer: Player;
-  /** null = free move (player can play in any active sub-board) */
+  /** Which sub-board the current player must play in, or null for free move */
   activeSubBoard: SubBoardIndex | null;
+  /** The last move played, for highlighting */
   lastMove: { subBoard: SubBoardIndex; cell: CellIndex } | null;
+  /** Overall game outcome, null while game is in progress */
   gameOutcome: { result: 'win'; winner: Player } | { result: 'draw' } | null;
+  /** Total number of moves played */
   moveCount: number;
+  /** History of all moves for replay-based undo */
+  moveHistory: { subBoard: SubBoardIndex; cell: CellIndex }[];
 }

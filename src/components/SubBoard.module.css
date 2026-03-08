@@ -1,38 +1,88 @@
 .subBoard {
+  position: relative;
+  padding: var(--gap-sub);
+  border-radius: var(--board-radius);
+  border: 2px solid transparent;
+  transition: border-color var(--transition-normal), background-color var(--transition-normal),
+    opacity var(--transition-normal);
+}
+
+.grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  gap: 2px;
-  padding: 6px;
-  border-radius: 10px;
-  background: rgba(51, 65, 85, 0.3);
-  border: 2px solid rgba(71, 85, 105, 0.4);
-  transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
-  position: relative;
-  overflow: hidden;
+  gap: var(--gap-sub);
 }
 
+/* Active sub-board: highlighted border */
 .active {
-  border-color: rgba(129, 140, 248, 0.6);
-  background: rgba(129, 140, 248, 0.08);
-  box-shadow: 0 0 20px rgba(129, 140, 248, 0.1);
+  border-color: var(--color-active-border);
+  background: var(--color-active);
 }
 
-.resolved {
-  pointer-events: none;
+/* Inactive sub-board: muted */
+.inactive {
+  opacity: 0.55;
 }
 
+.inactive:not(.won):not(.draw) {
+  border-color: var(--color-border);
+}
+
+/* Won sub-boards */
+.won {
+  opacity: 1;
+}
+
+.wonX {
+  background: var(--color-won-x);
+  border-color: var(--color-x);
+}
+
+.wonO {
+  background: var(--color-won-o);
+  border-color: var(--color-o);
+}
+
+.draw {
+  background: var(--color-draw);
+  border-color: var(--color-border);
+  opacity: 0.6;
+}
+
+/* Overlay for won/drawn sub-boards */
 .overlay {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  font-weight: 900;
-  border-radius: 8px;
-  z-index: 2;
-  animation: overlayFadeIn 0.3s ease-out;
+  border-radius: var(--board-radius);
+  animation: overlayFadeIn 300ms ease-out;
+  pointer-events: none;
+}
+
+.overlayX {
+  font-size: var(--font-size-overlay);
+  font-weight: 800;
+  color: var(--color-x);
+  text-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+}
+
+.overlayO {
+  font-size: var(--font-size-overlay);
+  font-weight: 800;
+  color: var(--color-o);
+  text-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+.overlayDraw {
+  background: rgba(15, 23, 42, 0.6);
+}
+
+.overlayDrawText {
+  font-size: var(--font-size-overlay);
+  font-weight: 800;
+  color: var(--color-text-muted);
 }
 
 @keyframes overlayFadeIn {
@@ -43,45 +93,5 @@
   to {
     opacity: 1;
     transform: scale(1);
-  }
-}
-
-.wonX {
-  background: rgba(96, 165, 250, 0.15);
-  color: rgba(96, 165, 250, 0.85);
-  backdrop-filter: blur(2px);
-}
-
-.wonO {
-  background: rgba(244, 114, 182, 0.15);
-  color: rgba(244, 114, 182, 0.85);
-  backdrop-filter: blur(2px);
-}
-
-.draw {
-  background: rgba(100, 116, 139, 0.25);
-  backdrop-filter: blur(2px);
-}
-
-.drawText {
-  color: rgba(148, 163, 184, 0.7);
-  font-size: clamp(0.75rem, 2vw, 1rem);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-@media (max-width: 767px) {
-  .subBoard {
-    padding: 4px;
-    border-radius: 8px;
-    gap: 1px;
-  }
-}
-
-@media (max-width: 499px) {
-  .subBoard {
-    padding: 3px;
-    border-radius: 6px;
   }
 }

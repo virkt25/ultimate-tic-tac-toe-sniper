@@ -1,0 +1,16 @@
+id: L-20260307-c3d4
+status: active
+confidence: 0.5
+source:
+  type: retro
+  protocol_id: SNPR-20260307-c8a1
+  detail: "8/69 acceptance criteria were PARTIAL due to naming mismatches and inexact CSS values in the spec."
+learning: "Spec CSS values (clamp ranges, animation durations, ARIA label formats) must use exact values or explicitly mark them as approximate with '~'. Naming deviations should be pre-approved in the plan phase to avoid false partial verdicts during review."
+scope:
+  agents: [analyst, architect]
+  phases: [discover, plan]
+  files: ["src/global.css", "src/components/**/*.module.css"]
+created: "2026-03-07"
+updated: "2026-03-07"
+applied_in: []
+history: []

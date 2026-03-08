@@ -1,0 +1,16 @@
+id: L-20260307-a1b2
+status: active
+confidence: 0.5
+source:
+  type: retro
+  protocol_id: SNPR-20260307-c8a1
+  detail: "Review found 0% component test coverage. All UI behavior verified only by code review."
+learning: "Frontend protocols must include a component testing story (React Testing Library) to cover click handling, ARIA attributes, disabled states, and conditional rendering. Without it, UI coverage is 0% and acceptance criteria are unverifiable."
+scope:
+  agents: [product-manager, frontend-dev]
+  phases: [plan, implement]
+  files: ["src/components/**"]
+created: "2026-03-07"
+updated: "2026-03-07"
+applied_in: []
+history: []

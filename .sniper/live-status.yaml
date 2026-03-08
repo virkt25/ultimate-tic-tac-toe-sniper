@@ -1,17 +1,21 @@
-protocol_id: SNPR-20260307-b7e4
+protocol_id: SNPR-20260307-c8a1
 protocol: full
 status: completed
-current_phase: review
+current_phase: retro
 phases:
-  discover: completed
-  plan: completed
-  implement: completed
-  review: completed
-agents:
-  analyst: completed
-  architect: completed
-  product-manager: completed
-  frontend-dev: completed
-  code-reviewer: completed
-  qa-engineer: completed
-cost_pct: 0
+  discover:
+    status: completed
+    agents: [analyst, product-manager]
+  plan:
+    status: completed
+    agents: [architect, product-manager]
+  implement:
+    status: completed
+    agents: [frontend-dev]
+  review:
+    status: completed
+    agents: [code-reviewer, qa-engineer]
+  retro:
+    status: completed
+    agents: [retro-analyst]
+cost_percentage: 2

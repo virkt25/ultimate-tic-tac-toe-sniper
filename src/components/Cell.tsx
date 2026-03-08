@@ -1,55 +1,55 @@
-import type { CellValue, Player } from '../engine/types';
+import type { SubBoardIndex, CellIndex } from '../engine/types.ts';
+import { useGameStore } from '../store/gameStore.ts';
+import { POSITION_LABELS } from '../engine/constants.ts';
 import styles from './Cell.module.css';
 
 interface CellProps {
-  value: CellValue;
-  isValid: boolean;
-  isLastMove: boolean;
-  currentPlayer: Player;
-  subBoardRow: number;
-  subBoardCol: number;
-  cellRow: number;
-  cellCol: number;
-  onClick: () => void;
+  subBoard: SubBoardIndex;
+  cell: CellIndex;
 }
 
-export function Cell({
-  value,
-  isValid,
-  isLastMove,
-  currentPlayer,
-  subBoardRow,
-  subBoardCol,
-  cellRow,
-  cellCol,
-  onClick,
-}: CellProps) {
-  const cellClasses = [
+export function Cell({ subBoard, cell }: CellProps) {
+  const value = useGameStore((s) => s.board[subBoard][cell]);
+  const isLastMove = useGameStore(
+    (s) => s.lastMove?.subBoard === subBoard && s.lastMove?.cell === cell,
+  );
+  const makeMove = useGameStore((s) => s.makeMove);
+
+  // Compute validity inline to avoid calling a function that Zustand can't cache
+  const isValid = useGameStore((s) => {
+    if (s.gameOutcome !== null) return false;
+    if (s.board[subBoard][cell] !== null) return false;
+    if (s.subBoardStatus[subBoard].result !== 'playing') return false;
+    if (s.activeSubBoard === null) return true;
+    if (s.activeSubBoard === subBoard) return true;
+    // Sent to a resolved board → free choice
+    return s.subBoardStatus[s.activeSubBoard].result !== 'playing';
+  });
+
+  const classNames = [
     styles.cell,
-    value === 'X' ? styles.x : value === 'O' ? styles.o : '',
-    isValid ? styles.valid : styles.invalid,
+    value === 'X' ? styles.x : '',
+    value === 'O' ? styles.o : '',
+    isValid ? styles.valid : '',
     isLastMove ? styles.lastMove : '',
   ]
     .filter(Boolean)
     .join(' ');
 
-  const posLabel = `Sub-board row ${subBoardRow + 1} column ${subBoardCol + 1}, cell row ${cellRow + 1} column ${cellCol + 1}`;
-  const valueLabel = value ? value : 'empty';
-  const statusLabel = isValid ? ', available' : '';
+  const subBoardLabel = POSITION_LABELS[subBoard];
+  const cellLabel = POSITION_LABELS[cell];
+  const valueLabel = value ?? 'empty';
+  const ariaLabel = `Sub-board ${subBoardLabel}, cell ${cellLabel}, ${valueLabel}${isValid ? ', available' : ''}`;
 
   return (
     <button
-      className={cellClasses}
-      onClick={onClick}
+      className={classNames}
+      onClick={() => isValid && makeMove(subBoard, cell)}
       disabled={!isValid}
-      aria-label={`${posLabel}, ${valueLabel}${statusLabel}`}
+      aria-label={ariaLabel}
       type="button"
     >
-      {value ? (
-        value
-      ) : isValid ? (
-        <span className={styles.hoverHint}>{currentPlayer}</span>
-      ) : null}
+      {value && <span className={styles.mark}>{value}</span>}
     </button>
   );
 }

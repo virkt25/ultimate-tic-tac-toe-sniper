@@ -1,25 +1,46 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
-
 :root {
-  /* Color palette */
+  /* Colors */
   --color-bg: #0f172a;
   --color-surface: #1e293b;
-  --color-border: #334155;
-  --color-text: #e2e8f0;
+  --color-surface-hover: #334155;
+  --color-border: #475569;
+  --color-border-strong: #94a3b8;
+  --color-text: #f1f5f9;
   --color-text-muted: #94a3b8;
-  --color-x: #60a5fa;
-  --color-o: #f472b6;
-  --color-accent: #818cf8;
-  --color-highlight: #facc15;
-  --color-success: #34d399;
 
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  color: var(--color-text);
-  background-color: var(--color-bg);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Player colors */
+  --color-x: #3b82f6;
+  --color-x-light: rgba(59, 130, 246, 0.15);
+  --color-o: #ef4444;
+  --color-o-light: rgba(239, 68, 68, 0.15);
+
+  /* Board colors */
+  --color-active: rgba(59, 130, 246, 0.2);
+  --color-active-border: #3b82f6;
+  --color-won-x: rgba(59, 130, 246, 0.12);
+  --color-won-o: rgba(239, 68, 68, 0.12);
+  --color-draw: rgba(148, 163, 184, 0.1);
+  --color-last-move: rgba(250, 204, 21, 0.25);
+
+  /* Spacing */
+  --gap-meta: clamp(6px, 1.2vw, 12px);
+  --gap-sub: clamp(2px, 0.4vw, 4px);
+  --cell-size: clamp(28px, 8vw, 48px);
+  --board-radius: 8px;
+  --cell-radius: 4px;
+
+  /* Typography */
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-mark: clamp(1rem, 3vw, 1.5rem);
+  --font-size-overlay: clamp(2rem, 8vw, 4rem);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
 }
 
 *,
@@ -30,24 +51,89 @@
   padding: 0;
 }
 
+html {
+  font-family: var(--font-family);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  background:
-    radial-gradient(ellipse at top, rgba(99, 102, 241, 0.08), transparent 50%),
-    radial-gradient(ellipse at bottom right, rgba(244, 114, 182, 0.05), transparent 50%),
-    var(--color-bg);
+  flex-direction: column;
+  align-items: center;
 }
 
 #root {
   width: 100%;
-  max-width: 100vw;
+  max-width: 720px;
+  padding: 1rem;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
-::selection {
-  background: rgba(129, 140, 248, 0.3);
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--color-active-border);
+  outline-offset: 2px;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Responsive: ensure minimum touch targets on smaller screens */
+@media (max-width: 500px) {
+  :root {
+    --cell-size: clamp(28px, 9vw, 44px);
+    --gap-meta: clamp(4px, 1vw, 8px);
+    --gap-sub: clamp(1px, 0.3vw, 3px);
+    --font-size-mark: clamp(0.875rem, 2.5vw, 1.25rem);
+    --font-size-overlay: clamp(1.5rem, 6vw, 3rem);
+  }
+}
+
+/* Skip to game link for keyboard users */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  background: var(--color-active-border);
+  color: white;
+  border-radius: var(--board-radius);
+  z-index: 100;
 }

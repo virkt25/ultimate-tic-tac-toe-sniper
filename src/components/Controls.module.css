@@ -1,36 +1,38 @@
 .controls {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1rem;
 }
 
-.newGameBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 24px;
-  border: 1px solid rgba(129, 140, 248, 0.3);
-  border-radius: 10px;
-  background: rgba(129, 140, 248, 0.1);
-  color: #a5b4fc;
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  outline: none;
+.button {
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--board-radius);
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
 }
 
-.newGameBtn:hover {
-  background: rgba(129, 140, 248, 0.2);
-  border-color: rgba(129, 140, 248, 0.5);
-  transform: translateY(-1px);
+.button:hover:not(:disabled) {
+  background: var(--color-surface-hover);
+  border-color: var(--color-border-strong);
 }
 
-.newGameBtn:active {
-  transform: translateY(0);
+.button:disabled {
+  opacity: 0.4;
+  cursor: default;
 }
 
-.newGameBtn:focus-visible {
-  box-shadow: 0 0 0 2px #818cf8;
+.primary {
+  background: var(--color-active-border);
+  border-color: var(--color-active-border);
+  color: white;
+}
+
+.primary:hover:not(:disabled) {
+  background: #2563eb;
+  border-color: #2563eb;
 }

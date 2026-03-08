@@ -1,83 +1,60 @@
-import type { CellIndex, CellValue, Player, SubBoardIndex, SubBoardStatus } from '../engine/types';
-import { Cell } from './Cell';
+import type { SubBoardIndex, CellIndex } from '../engine/types.ts';
+import { useGameStore } from '../store/gameStore.ts';
+import { POSITION_LABELS } from '../engine/constants.ts';
+import { Cell } from './Cell.tsx';
 import styles from './SubBoard.module.css';
 
 interface SubBoardProps {
   index: SubBoardIndex;
-  cells: CellValue[];
-  status: SubBoardStatus;
-  isActive: boolean;
-  currentPlayer: Player;
-  lastMove: { subBoard: SubBoardIndex; cell: CellIndex } | null;
-  isValidMove: (subBoard: SubBoardIndex, cell: CellIndex) => boolean;
-  onCellClick: (subBoard: SubBoardIndex, cell: CellIndex) => void;
 }
 
-export function SubBoard({
-  index,
-  cells,
-  status,
-  isActive,
-  currentPlayer,
-  lastMove,
-  isValidMove,
-  onCellClick,
-}: SubBoardProps) {
-  const subBoardRow = Math.floor(index / 3);
-  const subBoardCol = index % 3;
-  const isResolved = status.result !== 'playing';
+export function SubBoard({ index }: SubBoardProps) {
+  const status = useGameStore((s) => s.subBoardStatus[index]);
+  const activeSubBoard = useGameStore((s) => s.activeSubBoard);
+  const gameOutcome = useGameStore((s) => s.gameOutcome);
+  const subBoardStatus = useGameStore((s) => s.subBoardStatus);
 
-  const boardClasses = [
+  // Compute isActive inline instead of calling getValidBoards() which returns a new array each time
+  const isActive =
+    gameOutcome === null &&
+    status.result === 'playing' &&
+    (activeSubBoard === null || activeSubBoard === index ||
+      subBoardStatus[activeSubBoard].result !== 'playing');
+
+  const classNames = [
     styles.subBoard,
-    isActive && !isResolved ? styles.active : '',
-    isResolved ? styles.resolved : '',
+    isActive ? styles.active : styles.inactive,
+    status.result === 'won' ? styles.won : '',
+    status.result === 'draw' ? styles.draw : '',
+    status.result === 'won' && status.winner === 'X' ? styles.wonX : '',
+    status.result === 'won' && status.winner === 'O' ? styles.wonO : '',
   ]
     .filter(Boolean)
     .join(' ');
 
   return (
     <div
-      className={boardClasses}
+      className={classNames}
       role="group"
-      aria-label={`Sub-board ${subBoardRow + 1}-${subBoardCol + 1}${isResolved ? `, ${status.result === 'won' ? `won by ${status.winner}` : 'draw'}` : ''}`}
+      aria-label={`Sub-board ${POSITION_LABELS[index]}${
+        status.result === 'won' ? `, won by ${status.winner}` : ''
+      }${status.result === 'draw' ? ', drawn' : ''}`}
     >
-      {cells.map((cell, cellIdx) => {
-        const ci = cellIdx as CellIndex;
-        const cellRow = Math.floor(cellIdx / 3);
-        const cellCol = cellIdx % 3;
-        const isLast =
-          lastMove !== null &&
-          lastMove.subBoard === index &&
-          lastMove.cell === ci;
-
-        return (
-          <Cell
-            key={cellIdx}
-            value={cell}
-            isValid={isValidMove(index, ci)}
-            isLastMove={isLast}
-            currentPlayer={currentPlayer}
-            subBoardRow={subBoardRow}
-            subBoardCol={subBoardCol}
-            cellRow={cellRow}
-            cellCol={cellCol}
-            onClick={() => onCellClick(index, ci)}
-          />
-        );
-      })}
-
+      <div className={styles.grid}>
+        {Array.from({ length: 9 }, (_, i) => (
+          <Cell key={i} subBoard={index} cell={i as CellIndex} />
+        ))}
+      </div>
       {status.result === 'won' && (
-        <div
-          className={`${styles.overlay} ${status.winner === 'X' ? styles.wonX : styles.wonO}`}
-          aria-hidden="true"
-        >
-          {status.winner}
+        <div className={styles.overlay} aria-hidden="true">
+          <span className={status.winner === 'X' ? styles.overlayX : styles.overlayO}>
+            {status.winner}
+          </span>
         </div>
       )}
-
       {status.result === 'draw' && (
-        <div className={`${styles.overlay} ${styles.draw}`} aria-hidden="true">
-          <span className={styles.drawText}>Draw</span>
+        <div className={`${styles.overlay} ${styles.overlayDraw}`} aria-hidden="true">
+          <span className={styles.overlayDrawText}>-</span>
         </div>
       )}
     </div>

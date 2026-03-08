@@ -1,0 +1,15 @@
+id: L-20260307-e5f6
+status: active
+confidence: 0.5
+source:
+  type: retro
+  protocol_id: SNPR-20260307-c8a1
+  detail: "Review phase used 131K tokens (43.6% of total 301K). Three agents (code-reviewer, qa-engineer, fix-agent) ran sequentially."
+learning: "Review phase token spend can be reduced by running a lightweight automated check first (lint, type-check, coverage threshold) and only spawning deep code review + QA for issues that survive the automated pass. Target review phase at <30% of total budget."
+scope:
+  agents: [code-reviewer, qa-engineer]
+  phases: [review]
+created: "2026-03-07"
+updated: "2026-03-07"
+applied_in: []
+history: []

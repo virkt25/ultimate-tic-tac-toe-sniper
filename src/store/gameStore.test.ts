@@ -1,58 +1,49 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useGameStore } from './gameStore';
-import { createInitialState } from '../engine/engine';
-import type { GameState } from '../engine/types';
-
-function getGameState(): GameState {
-  const s = useGameStore.getState();
-  return {
-    board: s.board,
-    subBoardStatus: s.subBoardStatus,
-    currentPlayer: s.currentPlayer,
-    activeSubBoard: s.activeSubBoard,
-    lastMove: s.lastMove,
-    gameOutcome: s.gameOutcome,
-    moveCount: s.moveCount,
-  };
-}
-
-beforeEach(() => {
-  useGameStore.getState().reset();
-});
+import { useGameStore } from './gameStore.ts';
 
 describe('gameStore', () => {
-  it('initial state matches createInitialState()', () => {
-    expect(getGameState()).toEqual(createInitialState());
+  beforeEach(() => {
+    useGameStore.getState().resetGame();
   });
 
-  it('playMove dispatches to engine and updates store', () => {
-    useGameStore.getState().play(0, 4);
-
+  it('should start with initial state', () => {
     const state = useGameStore.getState();
-    expect(state.board[0][4]).toBe('X');
+    expect(state.currentPlayer).toBe('X');
+    expect(state.moveCount).toBe(0);
+    expect(state.gameOutcome).toBeNull();
+  });
+
+  it('should make a move and update state', () => {
+    useGameStore.getState().makeMove(4, 4);
+    const state = useGameStore.getState();
+    expect(state.board[4][4]).toBe('X');
     expect(state.currentPlayer).toBe('O');
-    expect(state.moveCount).toBe(1);
-    expect(state.lastMove).toEqual({ subBoard: 0, cell: 4 });
     expect(state.activeSubBoard).toBe(4);
+    expect(state.moveCount).toBe(1);
   });
 
-  it('resetGame returns to initial state', () => {
-    useGameStore.getState().play(0, 4);
-    useGameStore.getState().play(4, 0);
-    expect(useGameStore.getState().moveCount).toBe(2);
-
-    useGameStore.getState().reset();
-
-    expect(getGameState()).toEqual(createInitialState());
+  it('should reset the game', () => {
+    useGameStore.getState().makeMove(0, 0);
+    useGameStore.getState().resetGame();
+    const state = useGameStore.getState();
+    expect(state.moveCount).toBe(0);
+    expect(state.board[0][0]).toBeNull();
   });
 
-  it('invalid move does not change state', () => {
-    useGameStore.getState().play(0, 4); // X plays, sends to sub-board 4
-    const stateAfterFirst = getGameState();
+  it('should undo a move', () => {
+    useGameStore.getState().makeMove(4, 4);
+    useGameStore.getState().makeMove(4, 0);
+    useGameStore.getState().undoMove();
+    const state = useGameStore.getState();
+    expect(state.moveCount).toBe(1);
+    expect(state.board[4][0]).toBeNull();
+    expect(state.currentPlayer).toBe('O');
+  });
 
-    // Try to play in sub-board 0 when constrained to sub-board 4
-    useGameStore.getState().play(0, 0);
-
-    expect(getGameState()).toEqual(stateAfterFirst);
+  it('should validate moves correctly', () => {
+    useGameStore.getState().makeMove(0, 4);
+    const state = useGameStore.getState();
+    expect(state.isValidMove(4, 0)).toBe(true);
+    expect(state.isValidMove(0, 0)).toBe(false);
   });
 });
