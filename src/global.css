@@ -87,3 +87,53 @@ button:focus-visible {
   outline: 2px solid var(--color-active-border);
   outline-offset: 2px;
 }
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Responsive: ensure minimum touch targets on smaller screens */
+@media (max-width: 500px) {
+  :root {
+    --cell-size: clamp(28px, 9vw, 44px);
+    --gap-meta: clamp(4px, 1vw, 8px);
+    --gap-sub: clamp(1px, 0.3vw, 3px);
+    --font-size-mark: clamp(0.875rem, 2.5vw, 1.25rem);
+    --font-size-overlay: clamp(1.5rem, 6vw, 3rem);
+  }
+}
+
+/* Skip to game link for keyboard users */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  background: var(--color-active-border);
+  color: white;
+  border-radius: var(--board-radius);
+  z-index: 100;
+}
