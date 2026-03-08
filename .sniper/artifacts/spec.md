@@ -1,7 +1,7 @@
 # Discovery Spec: Ultimate Tic-Tac-Toe Web Game
 
 **Date:** 2026-03-07
-**Status:** Draft
+**Status:** Reconciled
 **Author:** Analyst Agent
 
 ---
@@ -51,7 +51,7 @@ Per `.sniper/config.yaml`:
 - **Package manager:** npm
 - **Deployment:** Purely client-side, no backend
 - **Two-player mode:** Hot-seat / pass-and-play on the same browser
-- **State management:** All game state lives in-browser (no persistence required for MVP)
+- **State management:** All game state lives in-browser. Game state is persisted to localStorage via Zustand's `persist` middleware to survive page refreshes.
 
 ---
 
@@ -62,7 +62,7 @@ The following are explicitly **not** in scope for the initial build:
 - **AI opponent / single-player mode** — No computer player
 - **Online multiplayer** — No networking, WebSocket, or server communication
 - **User accounts / authentication** — No login, profiles, or saved stats
-- **Game history / persistence** — No saving/loading games across sessions
+- **Game history / persistence** — No saving/loading games across sessions (note: current-game persistence to localStorage IS implemented)
 - **Undo/redo** — Nice-to-have but not required for MVP
 - **Sound effects / music** — Visual-only for MVP
 - **Mobile-first optimization** — Desktop and tablet are primary targets; mobile is best-effort
@@ -128,8 +128,8 @@ The following open questions have been resolved:
 | Decision | Choice | Rationale |
 |----------|--------|-----------|
 | **Framework** | React + Vite | Largest ecosystem, best TypeScript tooling, most community examples |
-| **Styling** | Tailwind CSS | Fast iteration on visual polish, consistent design tokens |
-| **State management** | React useState/useReducer | Sufficient for game complexity, no external library needed |
+| **Styling** | CSS Modules + CSS custom properties | Scoped styles, zero runtime, design tokens via CSS custom properties in `global.css`. Tailwind is installed but unused. |
+| **State management** | Zustand with `persist` middleware | Provides built-in localStorage sync, eliminates prop drilling. Replaces the originally planned `useReducer` approach. |
 | **Testing** | Vitest | Vite-native, fast, excellent TypeScript support |
 | **Draw detection** | Simple (all boards decided, no winner) | Early mathematical detection is too complex for MVP |
 | **First move rule** | Standard (play anywhere) | Most common variant, what players expect |
@@ -167,3 +167,7 @@ All open questions from discovery have been resolved. See Section 4 (Decisions) 
 - [React vs Vue vs Svelte Benchmarks - FrontendTools](https://www.frontendtools.tech/blog/best-frontend-frameworks-2025-comparison)
 - [Svelte vs React vs Vue in 2025 - merge.rocks](https://merge.rocks/blog/comparing-front-end-frameworks-for-startups-in-2025-svelte-vs-react-vs-vue)
 - [6 Best JavaScript Frameworks for 2026 - Strapi](https://strapi.io/blog/best-javascript-frameworks)
+
+---
+
+Last reconciled: 2026-03-07

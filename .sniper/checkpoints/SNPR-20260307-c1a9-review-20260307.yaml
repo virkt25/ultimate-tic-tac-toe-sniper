@@ -1,0 +1,13 @@
+protocol: full
+protocol_id: SNPR-20260307-c1a9
+phase: review
+timestamp: 2026-03-07T00:00:00Z
+status: completed
+agents:
+  - name: code-reviewer
+    status: completed
+token_usage:
+  phase: 69021
+  cumulative: 307864
+commits:
+  - 4c76d32
