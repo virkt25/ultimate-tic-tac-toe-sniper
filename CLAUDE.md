@@ -1,37 +1,42 @@
-# SNIPER Project
+# ultimate-tic-tac-toe-sniper
 
-## Framework
-This project uses SNIPER (Spawn, Navigate, Implement, Parallelize, Evaluate, Release).
-See `.sniper/config.yaml` for project settings.
+## SNIPER v3 Configuration
 
-## Quick Reference
-- Framework workflows: `.sniper/workflows/`
-- Persona layers: `.sniper/personas/`
-- Team definitions: `.sniper/teams/`
-- Artifact templates: `.sniper/templates/`
-- Quality gates: `.sniper/checklists/`
-- Project artifacts: `docs/`
-- Domain context: `.sniper/domain-packs/{pack-name}/`
+This project uses the SNIPER framework for AI-assisted project lifecycle management.
 
-## Commands
-- `/sniper-init` — Initialize SNIPER in a new project
-- `/sniper-discover` — Phase 1: Discovery & Analysis (parallel team)
-- `/sniper-plan` — Phase 2: Planning & Architecture (parallel team)
-- `/sniper-solve` — Phase 3: Epic Sharding & Story Creation (sequential)
-- `/sniper-sprint` — Phase 4: Implementation Sprint (parallel team)
-- `/sniper-review` — Run review gate for current phase
-- `/sniper-compose` — Create a spawn prompt from persona layers
-- `/sniper-status` — Show lifecycle status and artifact state
+### Quick Start
 
-## Agent Teams Rules
-When spawning teammates, always:
-1. Read the relevant team YAML from `.sniper/teams/`
-2. Compose spawn prompts using `/sniper-compose` with the layers specified in the YAML
-3. Assign file ownership boundaries from `config.yaml` ownership rules
-4. Create tasks with dependencies from the team YAML
-5. Enter delegate mode (Shift+Tab) — the lead coordinates, it does not code
-6. Require plan approval for tasks marked `plan_approval: true`
-7. When a phase completes, run `/sniper-review` before advancing
+- `/sniper-flow` — Run the appropriate protocol (auto-detects scope, or use `--protocol <name>`)
+- `/sniper-flow --resume` — Resume an interrupted protocol from the last checkpoint
+- `/sniper-init` — Re-initialize or update SNIPER configuration
+- `/sniper-status` — Show current protocol progress and cost
+- `/sniper-review` — Manually trigger a review gate
 
-## Code Standards
-See `.sniper/config.yaml` → stack section for language/framework specifics.
+### Project Structure
+
+```
+.sniper/
+  config.yaml          — Project configuration
+  live-status.yaml     — Real-time protocol progress
+  checkpoints/         — Phase checkpoint snapshots
+  gates/               — Gate review results
+  retros/              — Retrospective reports
+  self-reviews/        — Developer self-review artifacts
+.claude/
+  agents/              — Agent definitions (scaffolded from @sniper.ai/core)
+  settings.json        — Claude Code settings with hooks
+```
+
+### Configuration
+
+Edit `.sniper/config.yaml` to customize:
+- Agent roster and cognitive mixins
+- Protocol routing and token budgets
+- File ownership boundaries
+- Stack-specific commands (test, lint, build)
+
+### Ownership Rules
+
+Agents respect file ownership boundaries. See `.sniper/config.yaml` `ownership` section.
+
+

@@ -1,0 +1,22 @@
+gate: discover
+timestamp: 2026-03-07T00:01:00Z
+result: pass
+checks:
+  - id: spec_produced
+    status: pass
+    blocking: true
+    output: ".sniper/artifacts/spec.md exists (278 lines)"
+  - id: scope_defined
+    status: pass
+    blocking: true
+    output: "## Requirements section found"
+  - id: out_of_scope_explicit
+    status: pass
+    blocking: false
+    output: "## Out of Scope section found"
+  - id: codebase_overview
+    status: pass
+    blocking: false
+    output: ".sniper/artifacts/codebase-overview.md exists (154 lines)"
+blocking_failures: 0
+total_checks: 4
