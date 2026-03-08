@@ -1,0 +1,60 @@
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.newGameBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  border-radius: 10px;
+  background: rgba(129, 140, 248, 0.1);
+  color: #a5b4fc;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.newGameBtn:hover {
+  background: rgba(129, 140, 248, 0.2);
+  border-color: rgba(129, 140, 248, 0.5);
+  transform: translateY(-1px);
+}
+
+.newGameBtn:active {
+  transform: translateY(0);
+}
+
+.newGameBtn:focus-visible {
+  box-shadow: 0 0 0 2px #818cf8;
+}
+
+.emphasized {
+  padding: 14px 32px;
+  font-size: 1.05rem;
+  background: rgba(129, 140, 248, 0.25);
+  border-color: rgba(129, 140, 248, 0.6);
+  color: #c7d2fe;
+  animation: emphasisPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 12px rgba(129, 140, 248, 0.3);
+}
+
+.emphasized:hover {
+  background: rgba(129, 140, 248, 0.35);
+  box-shadow: 0 0 18px rgba(129, 140, 248, 0.4);
+}
+
+@keyframes emphasisPulse {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(129, 140, 248, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(129, 140, 248, 0.5);
+  }
+}
