@@ -1,0 +1,17 @@
+protocol_id: SNPR-20260307-b7e4
+protocol: full
+status: completed
+current_phase: review
+phases:
+  discover: completed
+  plan: completed
+  implement: completed
+  review: completed
+agents:
+  analyst: completed
+  architect: completed
+  product-manager: completed
+  frontend-dev: completed
+  code-reviewer: completed
+  qa-engineer: completed
+cost_pct: 0
