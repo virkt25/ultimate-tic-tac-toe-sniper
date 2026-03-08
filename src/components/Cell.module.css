@@ -50,7 +50,7 @@
 
 /* Mark placement animation */
 .mark {
-  animation: markAppear 200ms ease-out;
+  animation: markAppear 150ms ease-out;
 }
 
 @keyframes markAppear {

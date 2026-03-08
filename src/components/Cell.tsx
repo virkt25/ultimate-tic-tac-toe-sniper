@@ -10,11 +10,21 @@ interface CellProps {
 
 export function Cell({ subBoard, cell }: CellProps) {
   const value = useGameStore((s) => s.board[subBoard][cell]);
-  const isValid = useGameStore((s) => s.isValidMove(subBoard, cell));
   const isLastMove = useGameStore(
     (s) => s.lastMove?.subBoard === subBoard && s.lastMove?.cell === cell,
   );
   const makeMove = useGameStore((s) => s.makeMove);
+
+  // Compute validity inline to avoid calling a function that Zustand can't cache
+  const isValid = useGameStore((s) => {
+    if (s.gameOutcome !== null) return false;
+    if (s.board[subBoard][cell] !== null) return false;
+    if (s.subBoardStatus[subBoard].result !== 'playing') return false;
+    if (s.activeSubBoard === null) return true;
+    if (s.activeSubBoard === subBoard) return true;
+    // Sent to a resolved board → free choice
+    return s.subBoardStatus[s.activeSubBoard].result !== 'playing';
+  });
 
   const classNames = [
     styles.cell,

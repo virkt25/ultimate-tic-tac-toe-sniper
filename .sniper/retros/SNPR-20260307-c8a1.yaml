@@ -1,0 +1,63 @@
+protocol: full
+protocol_id: SNPR-20260307-c8a1
+completed_at: "2026-03-07T23:59:00Z"
+duration_phases:
+  - phase: discover
+    agents: 2
+    tokens: 40577
+    gate_attempts: 1
+    gate_result: pass
+    notes: "User corrected story-creation timing (L-001 applied). Spec + PRD approved."
+  - phase: plan
+    agents: 2
+    tokens: 48406
+    gate_attempts: 1
+    gate_result: pass
+    notes: "Architecture first, then stories. Correct ordering per L-001."
+  - phase: implement
+    agents: 1
+    tokens: 80792
+    gate_attempts: 0
+    gate_result: n/a
+    notes: "10 stories, 5 commits, 78 tests passing, 63.56 KB gzipped."
+  - phase: review
+    agents: 3
+    tokens: 131409
+    gate_attempts: 1
+    gate_result: pass
+    notes: "3 blocking issues found and fixed (coverage tooling, cell size, animation). 57/69 AC pass, 8 partial, 4 unverifiable."
+metrics:
+  total_tokens: 301184
+  total_agents_spawned: 8
+  gate_pass_rate: "100% (3/3 gates passed on first attempt)"
+  tests: 78
+  coverage_statements: "97.4%"
+  build_size: "63.56 KB JS + 2.18 KB CSS"
+  acceptance_criteria: "57/69 pass (82.6%), 8 partial, 4 unverifiable"
+findings:
+  went_well:
+    - "L-001 (discover ordering) was applied: stories deferred to plan phase. All gates passed first attempt."
+    - "Pure engine architecture (ADR-1) yielded 97.4% statement coverage and clean separation of concerns."
+    - "Review phase caught 3 blocking issues (coverage tooling, cell clamp, animation) that were all resolved before gate."
+    - "Implementation completed all 10 stories in a single phase with zero test failures."
+  needs_improvement:
+    - "Review phase consumed 43.6% of total tokens (131K/301K) — disproportionate to value delivered. Code reviewer + QA + fix agent is expensive."
+    - "8 partial + 4 unverifiable acceptance criteria (17.4% of total) indicate spec precision gaps, especially around naming and exact CSS values."
+    - "No component tests exist — 0% UI coverage. All UI verification was manual code review."
+  action_items:
+    - "Add component test story (React Testing Library) to future frontend protocols to avoid 0% UI test coverage."
+    - "Tighten spec precision for CSS values (exact clamp ranges, animation durations) to reduce partial AC verdicts."
+    - "Consider splitting review into lightweight lint-pass + targeted deep-review to reduce token spend in review phase."
+  learning_ids:
+    - L-20260307-a1b2
+    - L-20260307-c3d4
+    - L-20260307-e5f6
+signals_analyzed:
+  total: 0
+  by_type:
+    ci_failure: 0
+    pr_review_comment: 0
+  learnings_checked: 1
+  effectiveness:
+    validated: 1
+    recurrence: 0

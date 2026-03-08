@@ -10,9 +10,16 @@ interface SubBoardProps {
 
 export function SubBoard({ index }: SubBoardProps) {
   const status = useGameStore((s) => s.subBoardStatus[index]);
-  const validBoards = useGameStore((s) => s.getValidBoards());
+  const activeSubBoard = useGameStore((s) => s.activeSubBoard);
   const gameOutcome = useGameStore((s) => s.gameOutcome);
-  const isActive = gameOutcome === null && validBoards.includes(index);
+  const subBoardStatus = useGameStore((s) => s.subBoardStatus);
+
+  // Compute isActive inline instead of calling getValidBoards() which returns a new array each time
+  const isActive =
+    gameOutcome === null &&
+    status.result === 'playing' &&
+    (activeSubBoard === null || activeSubBoard === index ||
+      subBoardStatus[activeSubBoard].result !== 'playing');
 
   const classNames = [
     styles.subBoard,

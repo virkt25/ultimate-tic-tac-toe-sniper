@@ -4,7 +4,9 @@ import { SubBoard } from './SubBoard.tsx';
 import styles from './MetaBoard.module.css';
 
 export function MetaBoard() {
-  const winningLine = useGameStore((s) => s.getWinningLine());
+  const gameOutcome = useGameStore((s) => s.gameOutcome);
+  const getWinningLine = useGameStore((s) => s.getWinningLine);
+  const winningLine = gameOutcome !== null && gameOutcome.result === 'win' ? getWinningLine() : null;
 
   return (
     <div className={styles.metaBoard} role="grid" aria-label="Ultimate Tic-Tac-Toe board">
