@@ -1,6 +1,8 @@
 import type { CellIndex, GameState, SubBoardIndex } from '../engine/types';
 import { useGameStore } from '../store/gameStore';
 import { MetaBoard } from './MetaBoard';
+import { GameStatus } from './GameStatus';
+import { Controls } from './Controls';
 import styles from './App.module.css';
 
 export function App() {
@@ -23,7 +25,9 @@ export function App() {
   return (
     <div className={styles.app}>
       <h1 className={styles.title}>Ultimate Tic-Tac-Toe</h1>
+      <GameStatus state={gameState} />
       <MetaBoard state={gameState} onCellClick={handleCellClick} />
+      <Controls onNewGame={state.reset} />
     </div>
   );
 }

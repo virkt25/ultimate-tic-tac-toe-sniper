@@ -1,0 +1,36 @@
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.newGameBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  border-radius: 10px;
+  background: rgba(129, 140, 248, 0.1);
+  color: #a5b4fc;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.newGameBtn:hover {
+  background: rgba(129, 140, 248, 0.2);
+  border-color: rgba(129, 140, 248, 0.5);
+  transform: translateY(-1px);
+}
+
+.newGameBtn:active {
+  transform: translateY(0);
+}
+
+.newGameBtn:focus-visible {
+  box-shadow: 0 0 0 2px #818cf8;
+}
