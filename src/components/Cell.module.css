@@ -1,0 +1,65 @@
+.cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--cell-radius);
+  cursor: default;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+  position: relative;
+}
+
+.cell:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.cell.valid {
+  cursor: pointer;
+  opacity: 1;
+}
+
+.cell.valid:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-border-strong);
+}
+
+.cell.lastMove {
+  background: var(--color-last-move);
+  border-color: #facc15;
+}
+
+.mark {
+  font-size: var(--font-size-mark);
+  font-weight: 700;
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+}
+
+.x .mark {
+  color: var(--color-x);
+}
+
+.o .mark {
+  color: var(--color-o);
+}
+
+/* Mark placement animation */
+.mark {
+  animation: markAppear 200ms ease-out;
+}
+
+@keyframes markAppear {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
