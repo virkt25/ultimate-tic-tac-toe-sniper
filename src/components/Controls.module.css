@@ -25,6 +25,7 @@
   background: rgba(129, 140, 248, 0.2);
   border-color: rgba(129, 140, 248, 0.5);
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(129, 140, 248, 0.2);
 }
 
 .newGameBtn:active {
