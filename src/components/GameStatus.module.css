@@ -22,8 +22,19 @@
 }
 
 .gameOver {
-  background: rgba(52, 211, 153, 0.1);
-  border-color: rgba(52, 211, 153, 0.4);
+  background: rgba(52, 211, 153, 0.15);
+  border-color: rgba(52, 211, 153, 0.5);
+  animation: celebratePulse 2s ease-in-out infinite;
+  font-size: clamp(1rem, 3vw, 1.375rem);
+}
+
+@keyframes celebratePulse {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(52, 211, 153, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
+  }
 }
 
 .draw {

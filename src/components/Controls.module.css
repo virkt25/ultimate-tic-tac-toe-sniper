@@ -34,3 +34,27 @@
 .newGameBtn:focus-visible {
   box-shadow: 0 0 0 2px #818cf8;
 }
+
+.emphasized {
+  padding: 14px 32px;
+  font-size: 1.05rem;
+  background: rgba(129, 140, 248, 0.25);
+  border-color: rgba(129, 140, 248, 0.6);
+  color: #c7d2fe;
+  animation: emphasisPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 12px rgba(129, 140, 248, 0.3);
+}
+
+.emphasized:hover {
+  background: rgba(129, 140, 248, 0.35);
+  box-shadow: 0 0 18px rgba(129, 140, 248, 0.4);
+}
+
+@keyframes emphasisPulse {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(129, 140, 248, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(129, 140, 248, 0.5);
+  }
+}
