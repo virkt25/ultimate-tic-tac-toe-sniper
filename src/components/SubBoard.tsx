@@ -69,13 +69,14 @@ export function SubBoard({
       {status.result === 'won' && (
         <div
           className={`${styles.overlay} ${status.winner === 'X' ? styles.wonX : styles.wonO}`}
+          aria-hidden="true"
         >
           {status.winner}
         </div>
       )}
 
       {status.result === 'draw' && (
-        <div className={`${styles.overlay} ${styles.draw}`}>
+        <div className={`${styles.overlay} ${styles.draw}`} aria-hidden="true">
           <span className={styles.drawText}>Draw</span>
         </div>
       )}

@@ -1,11 +1,11 @@
-import type { CellValue } from '../engine/types';
+import type { CellValue, Player } from '../engine/types';
 import styles from './Cell.module.css';
 
 interface CellProps {
   value: CellValue;
   isValid: boolean;
   isLastMove: boolean;
-  currentPlayer: CellValue;
+  currentPlayer: Player;
   subBoardRow: number;
   subBoardCol: number;
   cellRow: number;

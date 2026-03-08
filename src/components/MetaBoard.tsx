@@ -43,6 +43,17 @@ export function MetaBoard({ state, onCellClick }: MetaBoardProps) {
     }
   }, []);
 
+  const isCellInActiveSubBoard = useCallback(
+    (flatIndex: number): boolean => {
+      const subBoardRow = Math.floor(flatIndex / 27);
+      const subBoardCol = Math.floor((flatIndex % 9) / 3);
+      const sbIdx = (subBoardRow * 3 + subBoardCol) as SubBoardIndex;
+      return isSubBoardActive(sbIdx);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [state.activeSubBoard, state.gameOutcome, state.subBoardStatus],
+  );
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLDivElement>) => {
       const target = e.target as HTMLElement;
@@ -54,37 +65,48 @@ export function MetaBoard({ state, onCellClick }: MetaBoardProps) {
       const currentIndex = Array.from(buttons).indexOf(target as HTMLButtonElement);
       if (currentIndex === -1) return;
 
-      const row = Math.floor(currentIndex / 9);
-      const col = currentIndex % 9;
-
-      let nextFlat = currentIndex;
+      let dr = 0;
+      let dc = 0;
 
       switch (e.key) {
         case 'ArrowUp':
-          e.preventDefault();
-          nextFlat = row > 0 ? (row - 1) * 9 + col : currentIndex;
+          dr = -1;
           break;
         case 'ArrowDown':
-          e.preventDefault();
-          nextFlat = row < 8 ? (row + 1) * 9 + col : currentIndex;
+          dr = 1;
           break;
         case 'ArrowLeft':
-          e.preventDefault();
-          nextFlat = col > 0 ? row * 9 + (col - 1) : currentIndex;
+          dc = -1;
           break;
         case 'ArrowRight':
-          e.preventDefault();
-          nextFlat = col < 8 ? row * 9 + (col + 1) : currentIndex;
+          dc = 1;
           break;
         default:
           return;
       }
 
-      if (nextFlat !== currentIndex) {
-        focusCell(nextFlat);
+      e.preventDefault();
+
+      const row = Math.floor(currentIndex / 9);
+      const col = currentIndex % 9;
+
+      let r = row + dr;
+      let c = col + dc;
+
+      // Walk in the arrow direction, skipping cells in inactive sub-boards
+      while (r >= 0 && r <= 8 && c >= 0 && c <= 8) {
+        const candidate = r * 9 + c;
+        if (isCellInActiveSubBoard(candidate)) {
+          focusCell(candidate);
+          return;
+        }
+        r += dr;
+        c += dc;
       }
+
+      // No active cell found in that direction; stay put
     },
-    [focusCell],
+    [focusCell, isCellInActiveSubBoard],
   );
 
   const winPattern =
