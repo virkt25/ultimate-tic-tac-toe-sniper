@@ -1,7 +1,7 @@
 project:
   name: ultimate-tic-tac-toe-sniper
   type: saas
-  description: Simple web based version of 2026 with a delightful and modern UI
+  description: A simpel web based ultimate tic tac toe game with a clean, modern UX
 agents:
   max_teammates: 5
   plan_approval: true
