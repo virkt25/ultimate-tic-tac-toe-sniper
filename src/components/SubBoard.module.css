@@ -70,3 +70,18 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
+
+@media (max-width: 767px) {
+  .subBoard {
+    padding: 4px;
+    border-radius: 8px;
+    gap: 1px;
+  }
+}
+
+@media (max-width: 499px) {
+  .subBoard {
+    padding: 3px;
+    border-radius: 6px;
+  }
+}

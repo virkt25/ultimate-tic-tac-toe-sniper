@@ -19,3 +19,18 @@
   background-clip: text;
   text-align: center;
 }
+
+/* Responsive scaling */
+@media (max-width: 767px) {
+  .app {
+    gap: 16px;
+    padding: 16px 12px;
+  }
+}
+
+@media (max-width: 499px) {
+  .app {
+    gap: 12px;
+    padding: 12px 8px;
+  }
+}

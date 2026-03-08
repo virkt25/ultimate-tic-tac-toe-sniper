@@ -34,3 +34,21 @@
     stroke-dashoffset: 0;
   }
 }
+
+@media (max-width: 767px) {
+  .metaBoard {
+    gap: 6px;
+    padding: 8px;
+    border-radius: 12px;
+    width: min(92vw, 520px);
+  }
+}
+
+@media (max-width: 499px) {
+  .metaBoard {
+    gap: 4px;
+    padding: 6px;
+    border-radius: 10px;
+    width: min(96vw, 520px);
+  }
+}
