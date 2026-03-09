@@ -1,0 +1,22 @@
+protocol: full
+protocol_id: SNPR-20260309-c7d1
+phase: solve
+timestamp: 2026-03-09T00:03:00Z
+status: completed
+agents:
+  - name: product-manager
+    status: completed
+    artifacts:
+      - .sniper/artifacts/SNPR-20260309-c7d1/stories/S01-project-scaffolding.md
+      - .sniper/artifacts/SNPR-20260309-c7d1/stories/S02-game-types-constants.md
+      - .sniper/artifacts/SNPR-20260309-c7d1/stories/S03-game-engine-core.md
+      - .sniper/artifacts/SNPR-20260309-c7d1/stories/S04-game-engine-draw-edge-cases.md
+      - .sniper/artifacts/SNPR-20260309-c7d1/stories/S05-engine-unit-tests.md
+      - .sniper/artifacts/SNPR-20260309-c7d1/stories/S06-zustand-store.md
+      - .sniper/artifacts/SNPR-20260309-c7d1/stories/S07-board-rendering.md
+      - .sniper/artifacts/SNPR-20260309-c7d1/stories/S08-game-interaction.md
+      - .sniper/artifacts/SNPR-20260309-c7d1/stories/S09-sub-board-win-overlay.md
+      - .sniper/artifacts/SNPR-20260309-c7d1/stories/S10-game-status-controls.md
+      - .sniper/artifacts/SNPR-20260309-c7d1/stories/S11-mark-celebration-animations.md
+      - .sniper/artifacts/SNPR-20260309-c7d1/stories/S12-responsive-keyboard-nav.md
+commits: []
