@@ -1,0 +1,59 @@
+:root {
+  --color-bg: #0f0f0f;
+  --color-surface: #1a1a2e;
+  --color-x: #00d4ff;
+  --color-o: #ff6b6b;
+  --color-text: #e0e0e0;
+  --color-text-muted: #888;
+  --color-active-board: rgba(255, 255, 255, 0.08);
+  --color-border: #333;
+  --color-border-thick: #555;
+  --radius-cell: 4px;
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, sans-serif;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#root {
+  width: 100%;
+  max-width: 600px;
+  padding: 1rem;
+}
+
+/* Responsive: tablet */
+@media (max-width: 1023px) {
+  #root {
+    max-width: 520px;
+  }
+}
+
+/* Responsive: phone */
+@media (max-width: 767px) {
+  #root {
+    max-width: 100%;
+    padding: 0.5rem;
+  }
+}
