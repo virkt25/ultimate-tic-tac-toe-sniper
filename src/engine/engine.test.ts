@@ -230,13 +230,18 @@ describe('makeMove', () => {
     expect(result.winner).toBeNull()
   })
 
-  it('detects early draw', () => {
+  it('detects early draw via makeMove', () => {
     const state = createInitialState()
-    // Set up outcomes so early draw triggers on next sub-board completion
-    // After next move, all lines are blocked
+    // Set up: X has 0,4 — O has 1,3 — draw: 2,5,6,7 — undecided: 8
+    // After O wins board 8, outcomes = X,O,draw,O,X,draw,draw,draw,O
+    // Lines:
+    //   [0,1,2]=X,O,draw  [3,4,5]=O,X,draw  [6,7,8]=draw,draw,O
+    //   [0,3,6]=X,O,draw  [1,4,7]=O,X,draw  [2,5,8]=draw,draw,O
+    //   [0,4,8]=X,X,O     [2,4,6]=draw,X,draw
+    // X can't win: every line has O or draw. O can't win: every line has X or draw.
     const rigged: GameState = {
       ...state,
-      subBoardOutcomes: ['X', 'O', 'X', 'O', 'X', 'O', 'X', 'O', null],
+      subBoardOutcomes: ['X', 'O', 'draw', 'O', 'X', 'draw', 'draw', 'draw', null],
       boards: state.boards.map((board, i) => {
         if (i === 8) {
           const b = [...board]
@@ -251,22 +256,9 @@ describe('makeMove', () => {
     }
 
     const result = makeMove(rigged, 8, 2)!
-    // O wins board 8. Now subBoardOutcomes = X,O,X,O,X,O,X,O,O
-    // Check meta-winner: no 3-in-a-row for either
-    // But wait — let me verify: O has boards 1,3,5,7,8
-    // Lines: [0,1,2]=X,O,X  [3,4,5]=O,X,O  [6,7,8]=X,O,O  [0,3,6]=X,O,X
-    // [1,4,7]=O,X,O  [2,5,8]=X,O,O  [0,4,8]=X,X,O  [2,4,6]=X,X,X → X wins!
-    // That doesn't work. Let me think of a real early draw scenario.
-    // Actually X has 0,2,4,6 and O has 1,3,5,7. If board 8 becomes draw:
-    // [2,4,6] = X,X,X → X wins diagonal. So this arrangement doesn't work.
-
-    // Better: X: 0,4,5  O: 1,3,8  draw: 2,6  undecided: 7
-    // Lines: [0,1,2]=X,O,draw [3,4,5]=O,X,X [6,7,8]=draw,?,O
-    // [0,3,6]=X,O,draw [1,4,7]=O,X,? [2,5,8]=draw,X,O
-    // [0,4,8]=X,X,O [2,4,6]=draw,X,draw
-    // X viable: [3,4,5]=O blocks, [1,4,7] needs 1(O)=blocked
-    // Actually this is getting complex. Let me just test isEarlyDraw directly.
-    expect(result).not.toBeNull()
+    expect(result.subBoardOutcomes[8]).toBe('O')
+    expect(result.status).toBe('draw')
+    expect(result.winner).toBeNull()
   })
 
   it('triggers free move when sent to a decided board', () => {

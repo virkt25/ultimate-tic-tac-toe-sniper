@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { useCallback } from 'react'
 import { motion } from 'motion/react'
 import styles from './Cell.module.css'
 import { useGameStore } from '../store/gameStore.ts'
@@ -14,7 +14,6 @@ interface CellProps {
 export default function Cell({ boardIndex, cellIndex, isActive, onArrowNav }: CellProps) {
   const cellValue = useGameStore((s) => s.game.boards[boardIndex][cellIndex])
   const playMove = useGameStore((s) => s.playMove)
-  const buttonRef = useRef<HTMLButtonElement>(null)
 
   const row = Math.floor(cellIndex / 3)
   const col = cellIndex % 3
@@ -38,7 +37,6 @@ export default function Cell({ boardIndex, cellIndex, isActive, onArrowNav }: Ce
 
   return (
     <button
-      ref={buttonRef}
       className={`${styles.cell} ${cellValue ? styles[`cell${cellValue}`] : ''} ${isActive && isEmpty ? styles.cellPlayable : ''}`}
       onClick={handleClick}
       onKeyDown={handleKeyDown}

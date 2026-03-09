@@ -47,7 +47,7 @@ export default function SubBoard({ boardIndex, isWinningBoard }: SubBoardProps) 
     <div
       className={`${styles.subBoard} ${isActive ? styles.active : ''} ${isDimmed ? styles.dimmed : ''} ${isDrawn ? styles.drawn : ''} ${isWinningBoard ? styles.winning : ''}`}
       role="group"
-      aria-label={`Sub-board ${boardIndex + 1}${outcome ? `, won by ${outcome}` : ''}`}
+      aria-label={`Sub-board ${boardIndex + 1}${outcome === 'draw' ? ', drawn' : outcome ? `, won by ${outcome}` : ''}`}
     >
       <div className={styles.grid} ref={gridRef}>
         {Array.from({ length: TOTAL_CELLS }, (_, i) => (

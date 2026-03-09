@@ -63,29 +63,17 @@ export function getNextActiveBoard(
  * neither player can achieve three in a row.
  */
 export function isEarlyDraw(subBoardOutcomes: readonly BoardOutcome[]): boolean {
-  // For each win line, check if it's still viable for X or O
-  // A line is dead if it contains sub-boards won by both X and O,
-  // or contains a drawn board blocking both players
-  for (const [a, b, c] of WIN_LINES) {
-    const vals = [subBoardOutcomes[a], subBoardOutcomes[b], subBoardOutcomes[c]]
-    // Check if X can still win this line (no O wins and no draws blocking)
-    const hasO = vals.some((v) => v === 'O')
-    const hasDraw = vals.some((v) => v === 'draw')
-    if (!hasO && !hasDraw) return false // X can still win this line
-    // Check if O can still win this line
-    const hasX = vals.some((v) => v === 'X')
-    if (!hasX && !hasDraw) return false // O can still win this line
-  }
-  // If we also need to check individual player viability:
-  // Check if X can win any line
+  // A line is viable for a player if it contains no cells owned by the opponent and no draws.
+  // If neither player has any viable line, the game is an early draw.
   let xCanWin = false
   let oCanWin = false
   for (const [a, b, c] of WIN_LINES) {
     const vals = [subBoardOutcomes[a], subBoardOutcomes[b], subBoardOutcomes[c]]
     if (!vals.some((v) => v === 'O' || v === 'draw')) xCanWin = true
     if (!vals.some((v) => v === 'X' || v === 'draw')) oCanWin = true
+    if (xCanWin && oCanWin) return false // both can still win, no early draw
   }
-  return !xCanWin && !oCanWin
+  return !xCanWin || !oCanWin
 }
 
 /**
