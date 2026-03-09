@@ -1,0 +1,47 @@
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-cell);
+  background: transparent;
+  cursor: default;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast);
+  padding: 0;
+  outline: none;
+}
+
+.cell:focus-visible {
+  outline: 2px solid var(--color-x);
+  outline-offset: -2px;
+}
+
+.cellPlayable {
+  cursor: pointer;
+}
+
+.cellPlayable:hover {
+  background: var(--color-active-board);
+  border-color: var(--color-border-thick);
+}
+
+.cellX {
+  color: var(--color-x);
+}
+
+.cellO {
+  color: var(--color-o);
+}
+
+.mark {
+  display: block;
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+}

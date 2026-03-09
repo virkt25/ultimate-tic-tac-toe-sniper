@@ -1,0 +1,11 @@
+.metaBoard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 6px;
+  background: var(--color-border-thick);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 540px;
+  aspect-ratio: 1;
+}

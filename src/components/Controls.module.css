@@ -1,0 +1,33 @@
+.controls {
+  display: flex;
+  justify-content: center;
+}
+
+.newGameButton {
+  padding: 0.6rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-thick);
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.newGameButton:hover {
+  background: var(--color-active-board);
+  border-color: var(--color-text-muted);
+}
+
+.newGameButton:active {
+  transform: scale(0.97);
+}
+
+.newGameButton:focus-visible {
+  outline: 2px solid var(--color-x);
+  outline-offset: 2px;
+}

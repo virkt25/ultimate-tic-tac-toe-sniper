@@ -1,0 +1,36 @@
+.statusContainer {
+  min-height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status {
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.colorX {
+  color: var(--color-x);
+}
+
+.colorO {
+  color: var(--color-o);
+}
+
+.celebration {
+  animation: celebrationPulse 1s ease-in-out infinite;
+  text-shadow: 0 0 20px currentColor;
+}
+
+@keyframes celebrationPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}

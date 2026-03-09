@@ -1,0 +1,27 @@
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 15, 15, 0.75);
+  border-radius: 6px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.overlayX {
+  color: var(--color-x);
+}
+
+.overlayO {
+  color: var(--color-o);
+}
+
+.symbol {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1;
+  user-select: none;
+  text-shadow: 0 0 20px currentColor;
+}
