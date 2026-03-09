@@ -57,16 +57,16 @@ For each phase in the protocol, execute these 5 steps:
 
 1. Read protocol YAML for the current phase definition
 2. Read `.sniper/config.yaml` for agent config, ownership, commands
-3. Check `.sniper/memory/velocity.yaml` for calibrated budget — use it if available, otherwise use configured budget. Log which source is used.
-4. Compose agents per [Reference: Agent Composition](#reference-agent-composition)
+3. Compose agents per [Reference: Agent Composition](#reference-agent-composition)
 
 ### Execute
 
 1. Determine spawn strategy from protocol phase definition (`single`, `sequential`, `parallel`, or `team`)
-2. Spawn agents per [Reference: Spawn Strategies](#reference-spawn-strategies)
-3. Monitor via TaskList — if an agent is blocked, investigate and guide via SendMessage
-4. If an agent crashes: note the failure, continue with remaining agents
-5. After all parallel agents complete: coordinate worktree merges per [Reference: Merge Coordination](#reference-merge-coordination)
+2. Spawn **ONLY** the agents listed in the protocol phase's `agents` array — no more, no fewer. Do NOT infer additional agents from the phase description or outputs. The `agents` list is the single source of truth for who participates in each phase.
+3. Spawn agents per [Reference: Spawn Strategies](#reference-spawn-strategies)
+4. Monitor via TaskList — if an agent is blocked, investigate and guide via SendMessage
+5. If an agent crashes: note the failure, continue with remaining agents
+6. After all parallel agents complete: coordinate worktree merges per [Reference: Merge Coordination](#reference-merge-coordination)
 
 ### Checkpoint
 
@@ -78,11 +78,12 @@ phase: <phase>
 timestamp: <ISO 8601>
 status: completed | failed
 agents: [status per agent]
-token_usage: [phase + cumulative]
 commits: [git SHAs produced]
 ```
 
-Update `.sniper/live-status.yaml` with current phase, agent statuses, and cost percentage.
+Update `.sniper/live-status.yaml` with current phase and agent statuses.
+
+After the `solve` phase completes, populate the `stories` array in `.sniper/live-status.yaml` by reading story files from `.sniper/artifacts/{protocol_id}/stories/`. During `implement`, update each story's status (`in_progress` → `completed`) as agents finish work on it.
 
 ### Gate
 
@@ -104,25 +105,15 @@ Update `.sniper/live-status.yaml` with current phase, agent statuses, and cost p
 
 1. Write final checkpoint
 2. Update `.sniper/live-status.yaml` with `status: completed`
-3. Update `.sniper/artifacts/{protocol_id}/meta.yaml` with final status, token usage, commits, agents used
+3. Update `.sniper/artifacts/{protocol_id}/meta.yaml` with final status, commits, agents used
 4. Update `.sniper/artifacts/registry.md` entry from `in_progress` to `completed`
-5. Present summary: phases completed, gate results, token usage
-6. If `auto_retro: true` in protocol: spawn `retro-analyst` as background task (see [Reference: Retrospective](#reference-retrospective))
-
-## Cost Tracking
-
-Maintain `.sniper/cost.yaml` throughout execution. At each checkpoint:
-- `warn_threshold` → log warning, continue
-- `soft_cap` → pause, ask user whether to continue
-- `hard_cap` → checkpoint and stop gracefully
-
-Read thresholds from `.sniper/config.yaml` cost section.
+5. Present summary: phases completed, gate results, learnings created
+6. **Backward compatibility:** If the protocol has `auto_retro: true` but no `retro` phase in its phases list (custom protocols), spawn retro-analyst as a single-agent phase before completing
 
 ## Rules
 
 - ALWAYS generate a protocol ID and create `.sniper/artifacts/{protocol_id}/` before spawning any agent
 - ALWAYS checkpoint between phases
-- ALWAYS respect token budgets
 - ALWAYS present the plan for interactive review when `interactive_review: true`
 - NEVER skip a gate — every phase transition goes through its gate
 - NEVER advance past a failed blocking gate check
@@ -141,9 +132,26 @@ For each agent in the phase, build the full prompt by layering these sources. Ea
 | 2. Mixins | `.claude/personas/cognitive/<mixin>.md` (from `config.agents.mixins.<agent>`) | WARN — skip mixin, continue |
 | 3. Domain knowledge | `.sniper/knowledge/manifest.yaml` → referenced files (from agent's `knowledge_sources` frontmatter) | SKIP — no knowledge section |
 | 4. Workspace conventions | `.sniper-workspace/config.yaml` → `shared.conventions` and `shared.anti_patterns` | SKIP — no workspace section |
-| 5. Signals | `.sniper/memory/signals/` → top 10 most relevant by `affected_files` and `relevance_tags` | SKIP — no signals section |
+| 5. Learnings | `.sniper/memory/learnings/` → scoped, confidence-ranked, top 10 | SKIP — no learnings |
 
-The composed prompt = base definition + concatenated mixin content + `## Domain Knowledge` section + `## Workspace Conventions` section + `## Anti-Patterns (Workspace)` section + `## Recent Learnings` section (formatted as `- [<type>] <summary> (<affected_files>)`).
+**Learning Composition (Layer 5):**
+
+```
+Filter: status IN (active, validated), confidence >= 0.4
+Match:  scope.agents includes <current_agent> OR scope.agents is null
+Match:  scope.phases includes <current_phase> OR scope.phases is null
+Match:  scope.files overlaps with <agent_ownership_paths> OR scope.files is null
+Rank:   confidence DESC, updated_at DESC
+Limit:  10
+```
+
+Confidence bands: `>= 0.7` = HIGH, `0.4–0.7` = MEDIUM.
+
+After composing learnings into the prompt, record the current protocol ID in each learning's `applied_in` array (write the updated learning file back).
+
+**Backward compatibility:** If `.sniper/memory/signals/` contains files but `.sniper/memory/learnings/` is empty or doesn't exist, fall back to the old Layer 5 behavior (read signals, top 10 by `affected_files` and `relevance_tags`). Log a warning: "Legacy signals detected. Run `/sniper-learn --review` to migrate."
+
+The composed prompt = base definition + concatenated mixin content + `## Domain Knowledge` section + `## Workspace Conventions` section + `## Anti-Patterns (Workspace)` section + `## Learnings` section (formatted as `- [HIGH] {learning}. Anti-pattern: {anti_pattern}. Instead: {correction}.` or `- [MEDIUM] {learning}.`).
 
 Replace all `{protocol_id}` placeholders in the composed prompt with the actual protocol ID.
 
@@ -180,17 +188,35 @@ For agents working in worktrees (after all implementation agents complete):
 
 When a phase has `interactive_review: true`:
 
-1. Read produced artifacts from `.sniper/artifacts/{protocol_id}/` (e.g., `plan.md`, `prd.md`, `stories/`)
-2. Present a structured summary: key architectural decisions, component overview, story count, open questions
+1. Read produced artifacts from `.sniper/artifacts/` or `.sniper/artifacts/{protocol_id}/` as appropriate
+2. Present a structured summary appropriate to the phase:
+   - **discover:** findings, constraints, codebase landscape, open questions
+   - **define:** requirements, success criteria, scope boundaries, out-of-scope items
+   - **design:** key architectural decisions, component overview, data model, trade-offs
+   - **solve:** story list, dependencies, acceptance criteria summary
 3. Offer options:
    - **Approve** — continue to next phase
    - **Request changes** — describe changes (architect/PM will revise, then re-present)
    - **Edit directly** — user modifies plan files, says "done", re-validate via gate
 4. Only advance after explicit user approval
 
-## Reference: Retrospective
+## Reference: Retrospective (Legacy)
 
-When `auto_retro: true`, after protocol completion:
-1. Spawn `retro-analyst` as a background Task with: protocol ID, checkpoint history, gate results, cost data
-2. The retro-analyst writes a report to `.sniper/retros/{protocol_id}.yaml`, updates `.sniper/memory/velocity.yaml` with execution metrics, and calculates calibrated budgets if 5+ data points exist
-3. Runs in background — user doesn't wait for it
+> **Note:** The retro is now a first-class phase in protocols (full, feature, refactor). This reference is retained for backward compatibility with custom protocols using `auto_retro: true`.
+
+When `auto_retro: true` and no `retro` phase exists in the protocol:
+1. Spawn `retro-analyst` as a single-agent phase with: protocol ID, checkpoint history, gate results
+2. The retro-analyst writes a report to `.sniper/retros/{protocol_id}.yaml`, extracts learnings to `.sniper/memory/learnings/`, and checks effectiveness of previously applied learnings
+3. Run the retro gate checklist (retro report exists)
+
+## Reference: Review Gate Feedback Capture
+
+When a user selects "Request changes" during an interactive review:
+
+1. Ask: "What should be changed and why?"
+2. Parse the response for actionable learnings — patterns and rules, not one-off fixes
+3. If the feedback describes a generalizable pattern (not just "fix line 42"):
+   - Create a learning with `source.type: human`, `confidence: 0.9`
+   - Scope to the current phase and relevant agents
+   - Write to `.sniper/memory/learnings/`
+4. Include the learning in the agent prompt when the phase reruns

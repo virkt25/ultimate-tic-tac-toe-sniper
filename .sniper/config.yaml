@@ -1,7 +1,7 @@
 project:
   name: ultimate-tic-tac-toe-sniper
   type: saas
-  description: Simple web based version of 2026 with a delightful and modern UI
+  description: Web Based Version of Ultimate Tic Tac Toe
 agents:
   max_teammates: 5
   plan_approval: true
@@ -23,18 +23,6 @@ routing:
     patch_max_files: 5
     feature_max_files: 20
   default: feature
-  budgets:
-    full: 2000000
-    feature: 800000
-    patch: 200000
-    ingest: 1000000
-    explore: 500000
-    refactor: 600000
-    hotfix: 100000
-cost:
-  warn_threshold: 0.7
-  soft_cap: 0.9
-  hard_cap: 1
 review:
   multi_model: false
   models: []
@@ -81,5 +69,4 @@ triggers: []
 visibility:
   live_status: true
   checkpoints: true
-  cost_tracking: true
   auto_retro: true
