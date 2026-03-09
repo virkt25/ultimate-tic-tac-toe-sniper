@@ -1,0 +1,15 @@
+id: L005
+source: SNPR-20260309-c7d1
+date: 2026-03-09
+category: architecture
+title: "Pure-function engine separation enables high test confidence with low effort"
+learning: >
+  Separating game logic into a pure-function engine module with zero framework
+  imports made it possible to write 29 comprehensive tests with simple arrange-act-assert
+  patterns and no mocking. The engine tested in isolation, the store was a thin
+  pass-through, and the UI components had minimal logic. This pattern should be
+  the default for any project with complex domain logic.
+applies_to:
+  - design
+  - implement
+effectiveness: proven

@@ -6,8 +6,8 @@ import {
   getWinningLine,
   getNextActiveBoard,
   isEarlyDraw,
-} from './engine.ts'
-import type { BoardOutcome, CellValue, GameState } from './types.ts'
+} from './engine'
+import type { BoardOutcome, CellValue, GameState } from './types'
 
 describe('createInitialState', () => {
   it('creates a valid initial state', () => {
@@ -28,65 +28,65 @@ describe('createInitialState', () => {
 
 describe('checkWinner', () => {
   it('returns null for empty board', () => {
-    expect(checkWinner(Array(9).fill(null))).toBeNull()
+    expect(checkWinner(Array<CellValue>(9).fill(null))).toBeNull()
   })
 
   it('detects row wins', () => {
-    const cells: CellValue[] = [null, null, null, 'X', 'X', 'X', null, null, null]
+    const cells = [null, null, null, 'X', 'X', 'X', null, null, null] satisfies CellValue[]
     expect(checkWinner(cells)).toBe('X')
   })
 
   it('detects column wins', () => {
-    const cells: CellValue[] = ['O', null, null, 'O', null, null, 'O', null, null]
+    const cells = ['O', null, null, 'O', null, null, 'O', null, null] satisfies CellValue[]
     expect(checkWinner(cells)).toBe('O')
   })
 
   it('detects diagonal wins', () => {
-    const cells: CellValue[] = ['X', null, null, null, 'X', null, null, null, 'X']
+    const cells = ['X', null, null, null, 'X', null, null, null, 'X'] satisfies CellValue[]
     expect(checkWinner(cells)).toBe('X')
   })
 
   it('detects anti-diagonal wins', () => {
-    const cells: CellValue[] = [null, null, 'O', null, 'O', null, 'O', null, null]
+    const cells = [null, null, 'O', null, 'O', null, 'O', null, null] satisfies CellValue[]
     expect(checkWinner(cells)).toBe('O')
   })
 
   it('returns null for no winner', () => {
-    const cells: CellValue[] = ['X', 'O', 'X', 'O', 'X', 'O', 'O', 'X', 'O']
+    const cells = ['X', 'O', 'X', 'O', 'X', 'O', 'O', 'X', 'O'] satisfies CellValue[]
     expect(checkWinner(cells)).toBeNull()
   })
 
   it('ignores draw values', () => {
-    const cells: BoardOutcome[] = ['draw', 'draw', 'draw', null, null, null, null, null, null]
+    const cells = ['draw', 'draw', 'draw', null, null, null, null, null, null] satisfies BoardOutcome[]
     expect(checkWinner(cells)).toBeNull()
   })
 })
 
 describe('getWinningLine', () => {
   it('returns winning indices', () => {
-    const cells: CellValue[] = ['X', 'X', 'X', null, null, null, null, null, null]
+    const cells = ['X', 'X', 'X', null, null, null, null, null, null] satisfies CellValue[]
     expect(getWinningLine(cells)).toEqual([0, 1, 2])
   })
 
   it('returns null when no winner', () => {
-    expect(getWinningLine(Array(9).fill(null))).toBeNull()
+    expect(getWinningLine(Array<CellValue>(9).fill(null))).toBeNull()
   })
 })
 
 describe('getNextActiveBoard', () => {
   it('returns the cell index as next board when that board is undecided', () => {
-    const outcomes = Array(9).fill(null)
+    const outcomes = Array<BoardOutcome>(9).fill(null)
     expect(getNextActiveBoard(4, outcomes)).toBe(4)
   })
 
   it('returns null (free move) when target board is decided', () => {
-    const outcomes = Array(9).fill(null)
+    const outcomes = Array<BoardOutcome>(9).fill(null)
     outcomes[3] = 'X'
     expect(getNextActiveBoard(3, outcomes)).toBeNull()
   })
 
   it('returns null when target board is drawn', () => {
-    const outcomes = Array(9).fill(null)
+    const outcomes = Array<BoardOutcome>(9).fill(null)
     outcomes[7] = 'draw'
     expect(getNextActiveBoard(7, outcomes)).toBeNull()
   })
@@ -94,16 +94,10 @@ describe('getNextActiveBoard', () => {
 
 describe('isEarlyDraw', () => {
   it('returns false for empty board', () => {
-    expect(isEarlyDraw(Array(9).fill(null))).toBe(false)
+    expect(isEarlyDraw(Array<BoardOutcome>(9).fill(null))).toBe(false)
   })
 
   it('returns true when no player can win', () => {
-    // Layout where every line is blocked by the other player or a draw:
-    // X: 0,4  O: 1,3  draw: 2,5,6,7,8
-    // [0,1,2]=X,O,draw  [3,4,5]=O,X,draw  [6,7,8]=draw,draw,draw
-    // [0,3,6]=X,O,draw  [1,4,7]=O,X,draw  [2,5,8]=draw,draw,draw
-    // [0,4,8]=X,X,draw  [2,4,6]=draw,X,draw
-    // X can't win: every line has O or draw. O can't win: every line has X or draw.
     const outcomes: BoardOutcome[] = ['X', 'O', 'draw', 'O', 'X', 'draw', 'draw', 'draw', 'draw']
     expect(isEarlyDraw(outcomes)).toBe(true)
   })

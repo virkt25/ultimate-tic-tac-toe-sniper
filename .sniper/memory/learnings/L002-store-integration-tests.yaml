@@ -1,0 +1,13 @@
+id: L002
+source: SNPR-20260309-c7d1
+date: 2026-03-09
+category: testing
+title: "Always include a story for state management integration tests"
+learning: >
+  Even when the state management layer is thin (e.g., a 27-line Zustand store that
+  delegates to a pure engine), the solve phase should include a dedicated story for
+  store-level integration tests. These tests verify the wiring between UI actions
+  and engine logic, catching issues that unit tests on either side alone would miss.
+applies_to:
+  - solve
+effectiveness: untested

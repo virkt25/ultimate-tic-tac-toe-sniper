@@ -1,0 +1,13 @@
+id: L003
+source: SNPR-20260309-c7d1
+date: 2026-03-09
+category: accessibility
+title: "Audit dynamic aria attributes across all state permutations"
+learning: >
+  Dynamic aria-label values that interpolate game state can produce semantically
+  incorrect text for some states (e.g., "won by draw"). The review phase should
+  include a checklist item that enumerates all possible values of dynamic aria
+  attributes and verifies each one reads correctly to a screen reader.
+applies_to:
+  - review
+effectiveness: untested

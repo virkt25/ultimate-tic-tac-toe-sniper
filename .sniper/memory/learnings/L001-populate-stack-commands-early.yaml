@@ -1,0 +1,15 @@
+id: L001
+source: SNPR-20260309-c7d1
+date: 2026-03-09
+category: process
+title: "Populate stack.commands during discover/design, not after"
+learning: >
+  When stack.commands (test, lint, typecheck, build) are left empty in config.yaml,
+  no automated verification runs during implement or review gates. This forces
+  manual verification and increases the chance of missing issues like dead code
+  or failing types. The discover or design phase should populate these commands
+  as soon as the tech stack is decided.
+applies_to:
+  - discover
+  - design
+effectiveness: untested

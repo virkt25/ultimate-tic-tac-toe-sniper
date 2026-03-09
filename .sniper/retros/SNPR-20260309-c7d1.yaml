@@ -1,0 +1,128 @@
+id: SNPR-20260309-c7d1
+protocol: full
+date: 2026-03-09
+description: "Web-based Ultimate Tic Tac Toe with modern UX, local 2P"
+
+phases:
+  - name: discover
+    agent: analyst
+    gate: pass
+    attempts: 1
+  - name: define
+    agent: product-manager
+    gate: pass
+    attempts: 1
+  - name: design
+    agent: architect
+    gate: pass
+    attempts: 1
+  - name: solve
+    agent: product-manager
+    gate: pass
+    attempts: 1
+  - name: implement
+    agent: frontend-dev
+    gate: pass
+    attempts: 1
+  - name: review
+    agent: code-reviewer
+    gate: pass
+    attempts: 1
+
+outcome:
+  verdict: success
+  gate_failures: 0
+  total_stories: 12
+  tests_passing: 29
+  blocking_findings: 0
+  suggestions: 3
+  nits: 3
+
+what_went_well:
+  - id: W1
+    area: architecture
+    detail: >
+      Clean engine/UI separation was maintained throughout. The engine module has
+      zero React imports, all functions are pure, and the Zustand store is only
+      27 lines. This made testing trivial and kept the codebase maintainable.
+  - id: W2
+    area: requirements
+    detail: >
+      100% PRD requirement coverage on first implementation pass. All 11 functional
+      requirements (including sub-items) and both non-functional requirements were
+      addressed without needing rework. The define and design phases produced
+      unambiguous specs that the implementer could follow directly.
+  - id: W3
+    area: gates
+    detail: >
+      All 4 gates passed on first attempt with no failures or re-runs. This
+      indicates the checklist criteria are well-calibrated for a project of this
+      scope and the agents produced sufficiently complete artifacts.
+  - id: W4
+    area: story_decomposition
+    detail: >
+      12 stories provided good granularity. Each story was small enough to implement
+      in a single pass, and the dependency ordering was correct (types -> engine ->
+      tests -> store -> UI components -> polish).
+  - id: W5
+    area: testing
+    detail: >
+      29 engine tests covered all critical paths including edge cases (early draw,
+      immutability, free move after decided board). This gave the reviewer high
+      confidence and reduced the review to stylistic suggestions only.
+
+what_needs_improvement:
+  - id: I1
+    area: testing_gaps
+    detail: >
+      No store-level integration tests were written despite S06 calling for a
+      Zustand store. The engine tests are thorough but the store is untested.
+      For a thin store this is low-risk, but the gap was flagged in review.
+    action: >
+      Future solve phases should include a story for store/integration tests
+      when the architecture has a state management layer, even if the layer is thin.
+  - id: I2
+    area: dead_code
+    detail: >
+      An unused `buttonRef` was declared in Cell.tsx. With strict TypeScript
+      flags enabled, this should have been caught during implementation.
+    action: >
+      Add a lint step (or `tsc --noEmit`) as a pre-commit gate during the
+      implement phase. Configure stack.commands.typecheck in config.yaml.
+  - id: I3
+    area: accessibility_edge_cases
+    detail: >
+      The SubBoard aria-label produces "won by draw" for drawn boards, which is
+      semantically incorrect. Accessibility review should be more systematic.
+    action: >
+      Add an accessibility checklist item to the review phase that specifically
+      audits dynamic aria attributes for all state permutations.
+  - id: I4
+    area: test_quality
+    detail: >
+      The early draw integration test through makeMove was effectively a no-op --
+      the test comment acknowledged the board state actually produces a win, not a
+      draw, and the assertion was weakened to `not.toBeNull()`.
+    action: >
+      Review phase should flag assertions that test nearly nothing (e.g.,
+      `.not.toBeNull()` on a function that returns an object or null). Add a
+      checklist item: "Do all test assertions verify meaningful behavior?"
+  - id: I5
+    area: config_completeness
+    detail: >
+      stack.commands (test, lint, typecheck, build) are all empty strings in
+      config.yaml. This means no automated verification was possible during
+      implementation gates. The reviewer had to run commands manually.
+    action: >
+      Populate stack.commands during the discover or design phase so that
+      implement and review phases can run automated checks. For this project:
+      test="npx vitest run", typecheck="npx tsc --noEmit", build="npx vite build".
+
+metrics:
+  phases_completed: 6
+  gate_pass_rate: "100%"
+  stories_completed: 12
+  test_count: 29
+  review_findings_blocking: 0
+  review_findings_suggestions: 3
+  review_findings_nits: 3

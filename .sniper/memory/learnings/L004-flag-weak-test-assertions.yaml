@@ -1,0 +1,15 @@
+id: L004
+source: SNPR-20260309-c7d1
+date: 2026-03-09
+category: testing
+title: "Flag test assertions that verify nearly nothing"
+learning: >
+  Assertions like `.not.toBeNull()` on a function that returns a rich object or null
+  are effectively no-ops -- they pass for any non-null return regardless of
+  correctness. The review checklist should include: "Do all test assertions verify
+  meaningful behavior?" Tests with weakened assertions due to hard-to-construct
+  scenarios should be either fixed or removed.
+applies_to:
+  - review
+  - implement
+effectiveness: untested
